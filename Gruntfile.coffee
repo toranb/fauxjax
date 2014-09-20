@@ -19,9 +19,10 @@ module.exports = (grunt) ->
     coveralls:
       options:
         debug: true
-        coverage_dir: "coverage"
+        coverage_dir: "coverage/"
         dryRun: true
         force: true
+        recursive: true
 
     uglify:
       my_target:
