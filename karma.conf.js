@@ -15,7 +15,7 @@ module.exports = function(config) {
         "src/fauxjax.js": "coverage"
     },
     coverageReporter: {
-        type: "html",
+        type: "lcov",
         dir: "coverage/"
     },
     plugins: [
