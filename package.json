@@ -35,6 +35,6 @@
     "grunt-karma-coveralls": "*"
   },
   "scripts": {
-    "test": "grunt karma"
+    "test": "grunt deploy"
   }
 }
