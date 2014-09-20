@@ -32,7 +32,6 @@
     "phantomjs": "*",
     "qunit-special-blend": "*",
     "testem": "*",
-    "coveralls": "*",
     "grunt-karma-coveralls": "*"
   },
   "scripts": {
