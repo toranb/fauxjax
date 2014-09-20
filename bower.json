@@ -1,0 +1,15 @@
+{
+  "name": "fauxjax",
+  "version": "0.0.1",
+  "main": ["dist/fauxjax.min.js"],
+  "ignore": [
+    ".gitignore",
+    ".travis.yml",
+    "*.json",
+    "Gruntfiles.coffee",
+    "karma.conf.js",
+    "*.md",
+    "test",
+    "src"
+  ]
+}

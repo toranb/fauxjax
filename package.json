@@ -1,0 +1,39 @@
+{
+  "name": "fauxjax",
+  "version": "0.0.1",
+  "description": "Faux ajax request for your javascript testing needs",
+  "url": "https://github.com/JarrodCTaylor/fauxjax",
+  "keywords": ["ajax", "mock", "fake", "unit"],
+  "author": "JarrodCTaylor",
+  "homepage": "https://github.com/JarrodCTaylor/fauxjax",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JarrodCTaylor/fauxjax"
+  },
+  "bugs": {
+    "url": "https://github.com/JarrodCTaylor/fauxjax/issues"
+  },
+  "licenses": {
+    "type": "WTFPL",
+    "url": "http://www.wtfpl.net/"
+  },
+  "devDependencies": {
+    "grunt-cli": "*",
+    "grunt-contrib-coffee": "*",
+    "grunt-karma": "*",
+    "grunt-testem-frontage": "*",
+    "grunt-contrib-uglify": "*",
+    "jquery": "*",
+    "karma": "*",
+    "karma-coverage": "*",
+    "karma-phantomjs-launcher": "*",
+    "karma-qunit": "*",
+    "karma-qunit-special-blend": "*",
+    "phantomjs": "*",
+    "qunit-special-blend": "*",
+    "testem": "*"
+  },
+  "scripts": {
+    "test": "grunt karma"
+  }
+}

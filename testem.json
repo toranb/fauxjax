@@ -1,0 +1,13 @@
+{
+    "framework": "qunit",
+    "src_files": [
+        "node_modules/qunit-special-blend/qunit-special-blend.js",
+        "node_modules/jquery/dist/jquery.js",
+        "dist/fauxjax.min.js",
+        "test/js/tests.min.js",
+        "node_modules/qunit-special-blend/run-qunit-special-blend.js"
+    ],
+    "debug": true,
+    "launch_in_dev": ["PhantomJS", "Chrome"],
+    "launch_in_ci": ["PhantomJS"]
+}
