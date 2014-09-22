@@ -126,12 +126,10 @@
      */
     function _xhrSend(mockRequestContext, realRequestContext) {
         var process = _.bind(function() {
-                                  var onReady;
                                   this.status = mockRequestContext.isTimeout ? -1 : mockRequestContext.status;
                                   this.statusText = mockRequestContext.statusText;
                                   this.responseText = formatResponseText(mockRequestContext.responseText);
-                                  onReady = this.onreadystatechange || this.onload;// jQuery 2.0 renamed onreadystatechange to onload
-                                  onReady.call(this);
+                                  this.onload.call(this);
                              }, this);
         realRequestContext.async ? setTimeout(process, mockRequestContext.responseTime) : process();
     }
