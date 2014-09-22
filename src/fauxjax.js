@@ -27,7 +27,6 @@
         responseTime:  500,
         isTimeout:     false,
         contentType:   'text/plain',
-        response:      '',
         responseText:  '',
         headers:       {'content-type' : 'text/plain'}
     };
@@ -71,7 +70,7 @@
 
     /**
      * Gets an array containing all real ajax requests.
-     * Useful is test teardown to check for requests that need to be mocked.
+     * Useful in test teardown to check for requests that need to be mocked.
      * @param {None}
      * @returns {Array} Returns an array of real ajax requests that have been fired
      */
@@ -138,12 +137,25 @@
     }
 
     /**
+     * Build the string used for response headers in the faux xhr object
+     * @param {Object} mockRequestContext
+     * @returns {Sting}
+     */
+    function buildResponseHeaders(mockRequestContext) {
+        var headers = '';
+        $.each(mockRequestContext.headers, function(k, v) {
+            headers += k + ': ' + v + "\n";
+        });
+        return headers;
+    }
+
+    /**
      * Build a faux xhr object that can be used in the faux ajax response
      * @param {Object} mockHandler
      * @param {Object} realRequestContext
      * @returns {Object} Returns a faux xhr object
      */
-    function xhr(mockHandler, realRequestContext) {
+    function fauxXhr(mockHandler, realRequestContext) {
         mockRequestContext = _.assign({}, $.fauxjax.settings, mockHandler);
         mockRequestContext.headers['content-type'] = mockRequestContext.contentType;
         realRequestContext.headers = {};
@@ -159,11 +171,7 @@
                 realRequestContext.headers[header] = value;
             },
             getAllResponseHeaders: function() {
-                var headers = '';
-                $.each(mockRequestContext.headers, function(k, v) {
-                    headers += k + ': ' + v + "\n";
-                });
-                return headers;
+                return buildResponseHeaders(mockRequestContext);
             }
         };
     }
@@ -177,7 +185,7 @@
      */
     function makeFauxAjaxCall(mockHandler, realRequestContext, realRequestSettings) {
         _ajax.call($, _.assign({}, realRequestSettings, {
-          xhr: function() {return xhr(mockHandler, realRequestContext);}
+          xhr: function() {return fauxXhr(mockHandler, realRequestContext);}
         }));
     }
 

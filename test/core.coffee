@@ -12,7 +12,6 @@ test "Fauxjax default settings", ->
   equal($.fauxjax.settings.responseTime, 500)
   equal($.fauxjax.settings.isTimeout, false)
   equal($.fauxjax.settings.contentType, 'text/plain')
-  equal($.fauxjax.settings.response, '')
   equal($.fauxjax.settings.responseText, '')
   equal($.fauxjax.settings.headers['content-type'], 'text/plain')
 
