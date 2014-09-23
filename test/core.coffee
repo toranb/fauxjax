@@ -17,7 +17,7 @@ test "Fauxjax default settings", ->
 
 asyncTest "Success callback should have access to xhr object", ->
 
-  $.fauxjax.newHandler
+  $.fauxjax.new
     type: "GET"
     url: "/faux-request"
     status: 200

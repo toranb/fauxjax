@@ -4,7 +4,7 @@
     var _ajax          = $.ajax,
         fauxHandlers   = [],
         fakedAjaxCalls = [],
-        realAjaxRequests  = [];
+        unhandled  = [];
 
     /* ---------------- The Fauxjax Object ------------------- */
     $.fauxjax = {}
@@ -16,7 +16,7 @@
      * @param {Object} settings The settings for the faux request
      * @returns {Int} Returns index faux request in handler array
      */
-    $.fauxjax.newHandler = function(settings) {
+    $.fauxjax.new = function(settings) {
         fauxHandlers.push(settings);
         return fauxHandlers.length - 1;
     };
@@ -42,7 +42,7 @@
     $.fauxjax.clear    = function() {
         fauxHandlers   = [];
         fakedAjaxCalls = [];
-        realAjaxRequests  = [];
+        unhandled  = [];
     };
 
     /**
@@ -50,7 +50,7 @@
      * @param {Integer} index The index of the faux handler to be removed
      * @returns {undefined}
      */
-    $.fauxjax.removeHandler = function(index) {
+    $.fauxjax.remove = function(index) {
       fauxHandlers[index] = null;
     };
 
@@ -60,7 +60,7 @@
      * @param {None}
      * @returns {Array} Returns an array of faux requests that have not been fired
      */
-    $.fauxjax.unfiredHandlers = function() {
+    $.fauxjax.unfired = function() {
         var results = [];
         for (var i=0, len=fauxHandlers.length; i<len; i++) {
             var handler = fauxHandlers[i];
@@ -77,8 +77,8 @@
      * @param {None}
      * @returns {Array} Returns an array of real ajax requests that have been fired
      */
-    $.fauxjax.realAjaxRequests = function() {
-        return realAjaxRequests;
+    $.fauxjax.unhandled = function() {
+        return unhandled;
     };
 
     /* -------------------- Internal Plugin API ----------------------- */
@@ -203,7 +203,7 @@
               return;
             }
         }
-        realAjaxRequests.push(realRequestSettings);
+        unhandled.push(realRequestSettings);
         return _ajax.apply($, [realRequestSettings]);
     }
 

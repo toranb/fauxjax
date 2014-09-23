@@ -7,7 +7,7 @@ module "Header Tests",
     $.fauxjax.settings = @defaultSettings
 
 asyncTest "Fauxjax request correctly returns html", ->
-  $.fauxjax.newHandler
+  $.fauxjax.new
     type: "GET"
     url: "/faux-request"
     contentType: "text/html"
@@ -25,7 +25,7 @@ asyncTest "Fauxjax request correctly returns html", ->
       start()
 
 asyncTest "Fauxjax request correctly returns json", ->
-  $.fauxjax.newHandler
+  $.fauxjax.new
     type: "GET"
     url: "/faux-request"
     contentType: "application/json"
@@ -43,7 +43,7 @@ asyncTest "Fauxjax request correctly returns json", ->
       start()
 
 asyncTest "Fauxjax request correctly returns text", ->
-  $.fauxjax.newHandler
+  $.fauxjax.new
     url: "/faux-request"
     contentType: "text/plain"
     responseText: "just text"
@@ -59,7 +59,7 @@ asyncTest "Fauxjax request correctly returns text", ->
       start()
 
 asyncTest "Fauxjax can set additional response headers", ->
-  $.fauxjax.newHandler
+  $.fauxjax.new
     type: "GET"
     url: "/fauxjax-request"
     headers: {"Something-Useful": "yes"}

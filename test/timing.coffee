@@ -1,14 +1,14 @@
 module "Connection Simulation Tests",
   setup: ->
-    $.fauxjax.newHandler
+    $.fauxjax.new
       url: "/faux-slower"
       responseTime: 150
 
-    $.fauxjax.newHandler
+    $.fauxjax.new
       url: "/faux-regular"
       responseTime: 50
 
-    $.fauxjax.newHandler
+    $.fauxjax.new
       url: "/faux-fase"
       responseTime: 0
 
@@ -69,7 +69,7 @@ asyncTest "Fauxjax response time is correctly simulated fast", ->
       start()
 
 asyncTest "Forcing timeout", ->
-  $.fauxjax.newHandler
+  $.fauxjax.new
     type: "GET"
     url: "/fauxjax-request"
     responseText: "done"

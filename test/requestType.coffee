@@ -7,7 +7,7 @@ module "Test Fake Vs Real Request Type",
     $.fauxjax.settings = @defaultSettings
 
 asyncTest "When faux and real requests have different request types fauxjax does not fake request POST vs PATCH", ->
-  $.fauxjax.newHandler
+  $.fauxjax.new
     type: "POST"
     url: "/faux-request"
     dataType: "json"
@@ -26,7 +26,7 @@ asyncTest "When faux and real requests have different request types fauxjax does
       start()
 
 asyncTest "When faux and real requests have different request types fauxjax does not fake request POST vs GET", ->
-  $.fauxjax.newHandler
+  $.fauxjax.new
     type: "POST"
     url: "/faux-request"
     dataType: "json"
@@ -44,7 +44,7 @@ asyncTest "When faux and real requests have different request types fauxjax does
       start()
 
 asyncTest "When faux and real requests have different request types fauxjax does not fake request POST vs PUT", ->
-  $.fauxjax.newHandler
+  $.fauxjax.new
     type: "POST"
     url: "/faux-request"
     dataType: "json"
@@ -63,7 +63,7 @@ asyncTest "When faux and real requests have different request types fauxjax does
       start()
 
 asyncTest "When faux and real requests have the same request types fauxjax does fake request GET vs GET", ->
-  $.fauxjax.newHandler
+  $.fauxjax.new
     type: "GET"
     url: "/faux-request"
     dataType: "json"
@@ -81,7 +81,7 @@ asyncTest "When faux and real requests have the same request types fauxjax does 
       start()
 
 asyncTest "Case-insensitive matching for request types", ->
-  $.fauxjax.newHandler
+  $.fauxjax.new
     url: "/faux-request"
     type: "GET"
     responseText: "Uppercase"

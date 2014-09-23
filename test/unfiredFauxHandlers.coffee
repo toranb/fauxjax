@@ -1,4 +1,4 @@
-module "unfiredHandlers array tests",
+module "unfired array tests",
   setup: ->
     @defaultSettings = _.clone($.fauxjax.settings)
     $.fauxjax.settings.responseTime = 0
@@ -7,16 +7,16 @@ module "unfiredHandlers array tests",
     $.fauxjax.clear()
 
 asyncTest "Get unfired handlers", ->
-  $.fauxjax.newHandler
+  $.fauxjax.new
     url: "/faux-request/1"
-  $.fauxjax.newHandler
+  $.fauxjax.new
     url: "/faux-request/2"
 
   $.ajax
     type: "GET"
     url: "/faux-request/1"
     complete: ->
-      handlersNotFired = $.fauxjax.unfiredHandlers()
+      handlersNotFired = $.fauxjax.unfired()
       equal(handlersNotFired.length, 1, "There should be one handler that was not fired")
       equal(handlersNotFired[0].url, "/faux-request/2", "Handler has unexpected url")
       start()
