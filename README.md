@@ -25,3 +25,9 @@ Fauxjax currently supports jQuery 2.x
 - [Clearing Fauxjax Handlers](https://github.com/JarrodCTaylor/fauxjax/wiki/Clearing-Fauxjax-Handlers)
 - [Checking for Unfaked Ajax Requests and Unused Fauxjax Instances](https://github.com/JarrodCTaylor/fauxjax/wiki/Checking-for-Unfaked-Ajax-Requests-and-Unused-Fauxjax-Instances)
 - [API Reference](https://github.com/JarrodCTaylor/fauxjax/wiki/API-Reference)
+
+# Running the Fauxjax Tests Locally
+
+If you have cloned this repository you can run the tests by doing the following
+- `npm install`
+- `grunt test`
