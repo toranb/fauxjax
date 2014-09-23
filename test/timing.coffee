@@ -8,6 +8,10 @@ module "Connection Simulation Tests",
       url: "/faux-regular"
       responseTime: 50
 
+    $.fauxjax
+      url: "/faux-fase"
+      responseTime: 0
+
   teardown: ->
     $.fauxjax.clear()
 
@@ -52,6 +56,16 @@ asyncTest "Fauxjax response time is correctly simulated", ->
     complete: (xhr, textStatus) ->
       actualDelay = ((new Date()) - startTime)
       ok(actualDelay >= 150, "Fauxjax response time was set to 150 the acutal delay was: #{actualDelay}")
+      start()
+
+asyncTest "Fauxjax response time is correctly simulated fast", ->
+  startTime = new Date()
+  $.ajax
+    type: "GET"
+    url: "/faux-fast"
+    complete: (xhr, textStatus) ->
+      actualDelay = ((new Date()) - startTime)
+      ok(actualDelay < 9, "Fauxjax response time was set to 0 the acutal delay was: #{actualDelay}")
       start()
 
 asyncTest "Forcing timeout", ->
