@@ -7,7 +7,7 @@ module "Test Fake Vs Real Request Data",
     $.fauxjax.settings = @defaultSettings
 
 asyncTest "When faux and real requests have different data fauxjax does not fake the request", ->
-  $.fauxjax.newHandler
+  $.fauxjax.new
     type: "POST"
     url: "/faux-request"
     data: {foo: "bar"}
@@ -24,7 +24,7 @@ asyncTest "When faux and real requests have different data fauxjax does not fake
       start()
 
 asyncTest "When faux and real request have the save data request is successfully faked", ->
-  $.fauxjax.newHandler
+  $.fauxjax.new
     type: "POST"
     url: "/faux-request"
     data: {values: [1, 2, 3]}
@@ -43,7 +43,7 @@ asyncTest "When faux and real request have the save data request is successfully
       start()
 
 asyncTest "Correctly matches request data when empty objects", ->
-  $.fauxjax.newHandler
+  $.fauxjax.new
     type: "POST"
     url: "/faux-request"
     data: {}
