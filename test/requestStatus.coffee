@@ -7,7 +7,7 @@ module "Test Faux Request Status Codes",
     $.fauxjax.settings = @defaultSettings
 
 asyncTest "Fauxjax with status of 500 returns an error and status is 500", ->
-  $.fauxjax
+  $.fauxjax.newHandler
     url: "/faux-request"
     status:  500
     responseText: "Internal Server Error"
@@ -22,7 +22,7 @@ asyncTest "Fauxjax with status of 500 returns an error and status is 500", ->
       start()
 
 asyncTest "Fauxjax with status of 404 returns an error and status is 404", ->
-  $.fauxjax
+  $.fauxjax.newHandler
     url: "/faux-request"
     status:  404
     responseText: "Not Found"
@@ -37,7 +37,7 @@ asyncTest "Fauxjax with status of 404 returns an error and status is 404", ->
       start()
 
 asyncTest "Fauxjax with status of 200 returns a success and status is 200", ->
-  $.fauxjax
+  $.fauxjax.newHandler
     url: "/faux-request"
     status:  200
     responseText: "That went well"

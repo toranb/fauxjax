@@ -7,7 +7,7 @@ module "Test Fake Vs Real Request URL",
     $.fauxjax.settings = @defaultSettings
 
 asyncTest "When faux and real requests have different urls fauxjax does not fake request", ->
-  $.fauxjax
+  $.fauxjax.newHandler
     type: "POST"
     url: "/faux-request/something"
     dataType: "json"
@@ -26,7 +26,7 @@ asyncTest "When faux and real requests have different urls fauxjax does not fake
       start()
 
 asyncTest "When faux and real requests have the same urls fauxjax does fake request", ->
-  $.fauxjax
+  $.fauxjax.newHandler
     type: "GET"
     url: "/faux-request"
     dataType: "json"

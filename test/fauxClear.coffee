@@ -7,7 +7,7 @@ module "Test Fauxjax clear options",
     $.fauxjax.settings = @defaultSettings
 
 asyncTest "Remove fauxjax definition by id", ->
-  id = $.fauxjax(
+  id = $.fauxjax.newHandler(
     type: "GET"
     url: "faux-request"
     contentType: "text/plain"
@@ -24,9 +24,9 @@ asyncTest "Remove fauxjax definition by id", ->
       start()
 
   stop()
-  $.fauxjax.removeFaux(id)
+  $.fauxjax.removeHandler(id)
 
-  $.fauxjax
+  $.fauxjax.newHandler
     url: "faux-request"
     contentType: "text/plain"
     responseText: "default"
@@ -41,20 +41,20 @@ asyncTest "Remove fauxjax definition by id", ->
       start()
 
 test "Remove fauxjax definition by id when mutiple exist", ->
-  id = $.fauxjax(
+  id = $.fauxjax.newHandler(
     type: "GET"
     url: "/faux-request/two"
     contentType: "text/plain"
     responseText: "test"
   )
 
-  $.fauxjax(
+  $.fauxjax.newHandler(
     type: "GET"
     url: "/faux-request"
     contentType: "text/plain"
     responseText: "test"
   )
 
-  equal(2, $.fauxjax.unfiredFauxHandlers().length)
-  $.fauxjax.removeFaux(id)
-  equal(1, $.fauxjax.unfiredFauxHandlers().length)
+  equal(2, $.fauxjax.unfiredHandlers().length)
+  $.fauxjax.removeHandler(id)
+  equal(1, $.fauxjax.unfiredHandlers().length)

@@ -4,7 +4,10 @@
     var _ajax          = $.ajax,
         fauxHandlers   = [],
         fakedAjaxCalls = [],
-        realAjaxCalls  = [];
+        realAjaxRequests  = [];
+
+    /* ---------------- The Fauxjax Object ------------------- */
+    $.fauxjax = {}
 
     /* -------------------- Public API ----------------------- */
 
@@ -13,7 +16,7 @@
      * @param {Object} settings The settings for the faux request
      * @returns {Int} Returns index faux request in handler array
      */
-    $.fauxjax = function(settings) {
+    $.fauxjax.newHandler = function(settings) {
         fauxHandlers.push(settings);
         return fauxHandlers.length - 1;
     };
@@ -39,7 +42,7 @@
     $.fauxjax.clear    = function() {
         fauxHandlers   = [];
         fakedAjaxCalls = [];
-        realAjaxCalls  = [];
+        realAjaxRequests  = [];
     };
 
     /**
@@ -47,7 +50,7 @@
      * @param {Integer} index The index of the faux handler to be removed
      * @returns {undefined}
      */
-    $.fauxjax.removeFaux = function(index) {
+    $.fauxjax.removeHandler = function(index) {
       fauxHandlers[index] = null;
     };
 
@@ -57,7 +60,7 @@
      * @param {None}
      * @returns {Array} Returns an array of faux requests that have not been fired
      */
-    $.fauxjax.unfiredFauxHandlers = function() {
+    $.fauxjax.unfiredHandlers = function() {
         var results = [];
         for (var i=0, len=fauxHandlers.length; i<len; i++) {
             var handler = fauxHandlers[i];
@@ -74,8 +77,8 @@
      * @param {None}
      * @returns {Array} Returns an array of real ajax requests that have been fired
      */
-    $.fauxjax.realAjaxCalls = function() {
-        return realAjaxCalls;
+    $.fauxjax.realAjaxRequests = function() {
+        return realAjaxRequests;
     };
 
     /* -------------------- Internal Plugin API ----------------------- */
@@ -200,7 +203,7 @@
               return;
             }
         }
-        realAjaxCalls.push(realRequestSettings);
+        realAjaxRequests.push(realRequestSettings);
         return _ajax.apply($, [realRequestSettings]);
     }
 

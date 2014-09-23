@@ -1,4 +1,4 @@
-module "realAjaxCalls array tests",
+module "realAjaxRequests array tests",
   setup: ->
     @defaultSettings = _.clone($.fauxjax.settings)
     $.fauxjax.settings.responseTime = 0
@@ -6,35 +6,35 @@ module "realAjaxCalls array tests",
     $.fauxjax.clear()
     $.fauxjax.settings = @defaultSettings
 
-asyncTest "realAjaxCalls array correctly collects real ajax calls", ->
+asyncTest "realAjaxRequests array correctly collects real ajax calls", ->
 
   $.ajax
     type: "GET"
     url: "/faux-request"
     complete: (xhr, textStatus) ->
-      realAjaxCalls = $.fauxjax.realAjaxCalls()
-      equal(realAjaxCalls.length, 1, "incorrect number of real ajax calls in realAjaxCalls array")
-      equal(realAjaxCalls[0].type, "GET", "request has incorrect type")
-      equal(realAjaxCalls[0].url, "/faux-request", "real ajax call has incorrect url")
+      realAjaxRequests = $.fauxjax.realAjaxRequests()
+      equal(realAjaxRequests.length, 1, "incorrect number of real ajax calls in realAjaxRequests array")
+      equal(realAjaxRequests[0].type, "GET", "request has incorrect type")
+      equal(realAjaxRequests[0].url, "/faux-request", "real ajax call has incorrect url")
       start()
 
-asyncTest "realAjaxCalls array is cleared when fauxjax.clear is called", ->
+asyncTest "realAjaxRequests array is cleared when fauxjax.clear is called", ->
 
   $.ajax
     type: "GET"
     url: "/faux-request"
     complete: (xhr, textStatus) ->
-      realAjaxCalls = $.fauxjax.realAjaxCalls()
-      equal(realAjaxCalls.length, 1, "incorrect number of real ajax calls in realAjaxCalls array")
-      equal(realAjaxCalls[0].type, "GET", "request has incorrect type")
-      equal(realAjaxCalls[0].url, "/faux-request", "real ajax call has incorrect url")
+      realAjaxRequests = $.fauxjax.realAjaxRequests()
+      equal(realAjaxRequests.length, 1, "incorrect number of real ajax calls in realAjaxRequests array")
+      equal(realAjaxRequests[0].type, "GET", "request has incorrect type")
+      equal(realAjaxRequests[0].url, "/faux-request", "real ajax call has incorrect url")
       $.fauxjax.clear()
-      realAjaxCalls = $.fauxjax.realAjaxCalls()
-      equal(realAjaxCalls.length, 0, "realAjaxCalls was not properly cleared")
+      realAjaxRequests = $.fauxjax.realAjaxRequests()
+      equal(realAjaxRequests.length, 0, "realAjaxRequests was not properly cleared")
       start()
 
-asyncTest "realAjaxCalls array returns nothing when no actual ajax calls occur", ->
-  $.fauxjax
+asyncTest "realAjaxRequests array returns nothing when no actual ajax calls occur", ->
+  $.fauxjax.newHandler
     type: "GET"
     url: "/faux-request"
 
@@ -42,6 +42,6 @@ asyncTest "realAjaxCalls array returns nothing when no actual ajax calls occur",
     type: "GET"
     url: "/faux-request"
     complete: (xhr, textStatus) ->
-      realAjaxCalls = $.fauxjax.realAjaxCalls()
-      equal(realAjaxCalls.length, 0, "No realAjaxCalls should have occured")
+      realAjaxRequests = $.fauxjax.realAjaxRequests()
+      equal(realAjaxRequests.length, 0, "No realAjaxRequests should have occured")
       start()
