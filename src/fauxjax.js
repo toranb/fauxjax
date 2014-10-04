@@ -97,7 +97,7 @@
             /** Handler was removed by id **/
             return false;
         }
-        if (mockHandler.data && !realRequestContext.data || !_.isEqual(mockHandler.data, realRequestContext.data)) {
+        if (mockHandler.data && !realRequestContext.data || _.some(_.compact([mockHandler.data, realRequestContext.data])) && !_.isEqual(mockHandler.data, realRequestContext.data)) {
             return false;
         }
         if (!_.isEqual(mockHandler.url, realRequestContext.url)) {

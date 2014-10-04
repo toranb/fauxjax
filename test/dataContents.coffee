@@ -59,3 +59,21 @@ asyncTest "Correctly matches request data when empty objects", ->
       ok(false, "Error was returned from a request that should have successfully been faked")
     complete: (xhr, textStatus) ->
       start()
+
+asyncTest "Data can be Undefined and Null and will still be succeffully mocked", ->
+  $.fauxjax.new
+    type: "GET"
+    url: "/faux-request"
+    data: null
+    responseText: {}
+
+  $.ajax
+    type: "GET"
+    url: "/faux-request"
+    data: undefined
+    success: (data, textStatus, xhr) ->
+      ok(true, "Request did not succeed and should have been successfully faked")
+    error: (xhr, textStatus) ->
+      ok(false, "Error was returned from a request that should have successfully been faked")
+    complete: (xhr, textStatus) ->
+      start()
