@@ -7,7 +7,7 @@
         unhandled  = [];
 
     /* ---------------- The Fauxjax Object ------------------- */
-    $.fauxjax = {}
+    $.fauxjax = {};
 
     /* -------------------- Public API ----------------------- */
 
@@ -185,9 +185,10 @@
      * @returns {undefined}
      */
     function makeFauxAjaxCall(mockHandler, realRequestContext, realRequestSettings) {
-        _ajax.call($, _.assign({}, realRequestSettings, {
+        fauxRequest = _ajax.call($, _.assign({}, realRequestSettings, {
           xhr: function() {return fauxXhr(mockHandler, realRequestContext);}
         }));
+        return fauxRequest;
     }
 
     /**
@@ -199,8 +200,8 @@
         for(var k = 0; k < fauxHandlers.length; k++) {
             if (shouldMockRequest(fauxHandlers[k], realRequestContext)) {
               fakedAjaxCalls.push(realRequestContext);
-              makeFauxAjaxCall(fauxHandlers[k], realRequestContext, realRequestSettings);
-              return;
+              fauxRequest = makeFauxAjaxCall(fauxHandlers[k], realRequestContext, realRequestSettings);
+              return fauxRequest;
             }
         }
         unhandled.push(realRequestSettings);
