@@ -94,3 +94,33 @@ asyncTest "Case-insensitive matching for request types", ->
     complete: (xhr, textStatus) ->
       equal(xhr.responseText, "Uppercase", "Response text was not a match")
       start()
+
+asyncTest "Multiple handlers can exist for the same url with different verbs", ->
+  $.fauxjax.new
+    type: "GET"
+    url: "/faux-request"
+
+  $.fauxjax.new
+    type: "POST"
+    url: "/faux-request"
+    dataType: "json"
+    data: {empty: "data"}
+
+  $.ajax
+    type: "GET"
+    url: "/faux-request"
+    success: (data, textStatus, xhr) ->
+      ok(true, "Handler with a GET verb does exist for this request it should be successfully mocked")
+    complete: (xhr, textStatus) ->
+      start()
+
+  stop()
+
+  $.ajax
+    type: "POST"
+    url: "/faux-request"
+    data: {empty: "data"}
+    success: (data, textStatus, xhr) ->
+      ok(true, "Handler with a POST verb does exist for this request it should be successfully mocked")
+    complete: (xhr, textStatus) ->
+      start()
