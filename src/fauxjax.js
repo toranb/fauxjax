@@ -4,7 +4,7 @@
     var _ajax          = $.ajax,
         fauxHandlers   = [],
         fakedAjaxCalls = [],
-        unhandled  = [];
+        unhandled      = [];
 
     /* ---------------- The Fauxjax Object ------------------- */
     $.fauxjax = {};
@@ -39,10 +39,10 @@
      * @param {None}
      * @returns {undefined}
      */
-    $.fauxjax.clear    = function() {
+    $.fauxjax.clear = function() {
         fauxHandlers   = [];
         fakedAjaxCalls = [];
-        unhandled  = [];
+        unhandled      = [];
     };
 
     /**
@@ -182,7 +182,8 @@
      * @param {Object} mockHandler
      * @param {Object} realRequestContext
      * @param {Object} realRequestSettings
-     * @returns {undefined}
+     * @returns {Object} Returns the actual jQuery ajax request object that was
+     *                   created with the fauxXhr method
      */
     function makeFauxAjaxCall(mockHandler, realRequestContext, realRequestSettings) {
         fauxRequest = _ajax.call($, _.assign({}, realRequestSettings, {
@@ -194,6 +195,7 @@
     /**
      * The entry point of the plugin. This intercepts calls to jQuery's ajax method
      * @param {Object} realRequestSettings The real request settings from the actual ajax call
+     * @returns {Object} Returns a jQuery ajax request object, either real or faux
      */
     function interceptAjax(realRequestSettings) {
         var realRequestContext = _.assign({}, $.ajaxSettings, realRequestSettings);
