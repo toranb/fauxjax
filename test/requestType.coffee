@@ -94,3 +94,23 @@ asyncTest "Case-insensitive matching for request types", ->
     complete: (xhr, textStatus) ->
       equal(xhr.responseText, "Uppercase", "Response text was not a match")
       start()
+
+asyncTest "When faux and real requests have the same contentType fauxjax will mock the xhr", ->
+  $.fauxjax.new
+    type: "GET"
+    url: "/faux-request"
+    dataType: "json"
+    contentType: "application/json"
+    responseText: {foo: "bar"}
+
+  $.ajax
+    type: "GET"
+    url: "/faux-request"
+    contentType: "application/json"
+    success: (data, textStatus, xhr) ->
+      ok(true, "Faux request type does match real request type. Request should have succeed")
+      ok(_.isEqual(data, '{"foo":"bar"}'))
+    error: (xhr, textStatus) ->
+      ok(false, "Faux request does match real request data. Request should not have returned and error")
+    complete: (xhr, textStatus) ->
+      start()
