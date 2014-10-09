@@ -7,12 +7,10 @@ module "Test Fauxjax clear options",
     $.fauxjax.settings = @defaultSettings
 
 asyncTest "Remove fauxjax definition by id", ->
-  id = $.fauxjax.new(
+  id = $.fauxjax.new
     type: "GET"
     url: "faux-request"
-    contentType: "text/plain"
     responseText: "test"
-  )
 
   $.ajax
     url: "faux-request"
@@ -28,7 +26,6 @@ asyncTest "Remove fauxjax definition by id", ->
 
   $.fauxjax.new
     url: "faux-request"
-    contentType: "text/plain"
     responseText: "default"
 
   $.ajax

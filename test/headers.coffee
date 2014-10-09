@@ -8,14 +8,18 @@ module "Header Tests",
 
 asyncTest "Fauxjax request correctly returns html", ->
   $.fauxjax.new
-    type: "GET"
+    type: "POST"
     url: "/faux-request"
     contentType: "text/html"
+    data: {some: "post"}
     responseText: "<div>WINNING</div>"
 
   $.ajax
+    type: "POST"
     url: "/faux-request"
     dataType: "html"
+    data: {some: "post"}
+    contentType: "text/html"
     success: (data, textStatus, xhr) ->
       equal(data, "<div>WINNING</div>", "Returned HTML does not match faked request")
     error: (xhr, textStatus) ->
@@ -26,14 +30,18 @@ asyncTest "Fauxjax request correctly returns html", ->
 
 asyncTest "Fauxjax request correctly returns json", ->
   $.fauxjax.new
-    type: "GET"
+    type: "POST"
     url: "/faux-request"
     contentType: "application/json"
+    data: {filler: "text"}
     responseText: {foo: "bar", baz: {car: "far"}}
 
   $.ajax
+    type: "POST"
     url: "/faux-request"
     dataType: "json"
+    data: {filler: "text"}
+    contentType: "application/json"
     success: (data, textStatus, xhr) ->
       ok(_.isEqual(data, {foo: "bar", baz: {car: "far"}}, "Returned json does not match"))
     error: (xhr, textStatus) ->
@@ -42,10 +50,9 @@ asyncTest "Fauxjax request correctly returns json", ->
       equal(xhr.getResponseHeader("Content-Type"), "application/json", "Incorrect context type was returned from faked call")
       start()
 
-asyncTest "Fauxjax request correctly returns text", ->
+asyncTest "Fauxjax request correctly returns text by default", ->
   $.fauxjax.new
     url: "/faux-request"
-    contentType: "text/plain"
     responseText: "just text"
 
   $.ajax

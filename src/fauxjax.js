@@ -103,6 +103,9 @@
         if (!_.isEqual(mockHandler.url, realRequestContext.url)) {
             return false;
         }
+        if (mockHandler.contentType && realRequestContext.contentType && !_.isEqual(mockHandler.contentType, realRequestContext.contentType)) {
+            return false;
+        }
         if (mockHandler.type && mockHandler.type.toLowerCase() != realRequestContext.type.toLowerCase()) {
             return false;
         }
@@ -157,7 +160,8 @@
      * @returns {Object} Returns a faux xhr object
      */
     function fauxXhr(mockHandler, realRequestContext) {
-        mockRequestContext = _.assign({}, $.fauxjax.settings, mockHandler);
+        deepCloneSettings = _.clone($.fauxjax.settings, true);
+        mockRequestContext = _.assign({}, deepCloneSettings, mockHandler);
         mockRequestContext.headers['content-type'] = mockRequestContext.contentType;
         realRequestContext.headers = {};
         return {

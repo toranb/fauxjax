@@ -1,5 +1,7 @@
 module "Connection Simulation Tests",
   setup: ->
+    @defaultSettings = _.clone($.fauxjax.settings)
+
     $.fauxjax.new
       url: "/faux-slower"
       responseTime: 150
@@ -14,6 +16,7 @@ module "Connection Simulation Tests",
 
   teardown: ->
     $.fauxjax.clear()
+    $.fauxjax.settings = @defaultSettings
 
 asyncTest "Async test", ->
   order = []

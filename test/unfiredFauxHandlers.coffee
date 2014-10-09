@@ -3,8 +3,8 @@ module "unfired array tests",
     @defaultSettings = _.clone($.fauxjax.settings)
     $.fauxjax.settings.responseTime = 0
   teardown: ->
-    $.fauxjax.settings = @defaultSettings
     $.fauxjax.clear()
+    $.fauxjax.settings = @defaultSettings
 
 asyncTest "Get unfired handlers", ->
   $.fauxjax.new
