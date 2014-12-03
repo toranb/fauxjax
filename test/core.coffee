@@ -9,7 +9,7 @@ test "Fauxjax default settings", ->
   ok(_.isEqual(@defaultSettings, $.fauxjax.settings))
   equal($.fauxjax.settings.status, 200)
   equal($.fauxjax.settings.statusText, "OK")
-  equal($.fauxjax.settings.responseTime, 500)
+  equal($.fauxjax.settings.responseTime, 0)
   equal($.fauxjax.settings.isTimeout, false)
   equal($.fauxjax.settings.contentType, 'text/plain')
   equal($.fauxjax.settings.responseText, '')

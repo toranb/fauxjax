@@ -27,7 +27,7 @@
     $.fauxjax.settings = {
         status:        200,
         statusText:    "OK",
-        responseTime:  500,
+        responseTime:  0,
         isTimeout:     false,
         contentType:   'text/plain',
         responseText:  '',
