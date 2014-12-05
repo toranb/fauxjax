@@ -6,7 +6,7 @@ module.exports = function(config) {
     files: [
       "node_modules/qunit-special-blend/qunit-special-blend.js",
       "node_modules/jquery/dist/jquery.js",
-      "src/lodash.min.js",
+      "node_modules/lodash/dist/lodash.min.js",
       "src/fauxjax.js",
       "test/js/tests.min.js",
       "node_modules/qunit-special-blend/run-qunit-special-blend.js"

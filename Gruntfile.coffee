@@ -27,7 +27,7 @@ module.exports = (grunt) ->
     uglify:
       my_target:
         files:
-          "dist/fauxjax.min.js": ["src/lodash.min.js", "src/fauxjax.js"]
+          "dist/fauxjax.min.js": ["node_modules/lodash/dist/lodash.min.js", "src/fauxjax.js"]
 
     grunt.task.registerTask("test", ["coffee", "uglify", "testem"])
     grunt.task.registerTask("deploy", ["coffee", "uglify", "karma", "coveralls"])

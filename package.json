@@ -1,6 +1,6 @@
 {
   "name": "fauxjax",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Faux ajax requests for your javascript testing needs",
   "url": "https://github.com/JarrodCTaylor/fauxjax",
   "keywords": ["ajax", "mock", "fake", "unit"],
@@ -16,6 +16,9 @@
   "licenses": {
     "type": "WTFPL",
     "url": "http://www.wtfpl.net/"
+  },
+  "dependencies": {
+    "lodash": "2.4.1"
   },
   "devDependencies": {
     "grunt-cli": "*",
