@@ -109,6 +109,9 @@
         if (mockHandler.type && mockHandler.type.toLowerCase() != realRequestContext.type.toLowerCase()) {
             return false;
         }
+        if (!_.isEqual(mockHandler.headers, realRequestContext.headers)) {
+            return false;
+        }
         return true;
     }
 

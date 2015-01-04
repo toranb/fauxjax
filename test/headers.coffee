@@ -75,10 +75,46 @@ asyncTest "Fauxjax can set additional response headers", ->
   $.ajax
     type: "GET"
     url: "/fauxjax-request"
+    headers: {"Something-Useful": "yes"}
     error: (xhr, textStatus) ->
       ok(false, "Request should have been successfully faked")
     success: (data, textStatus, xhr) ->
       equal(data, "done", "Request response didn't not match the fake")
     complete: (xhr, textStatus) ->
       equal(xhr.getResponseHeader("Something-Useful"), "yes", "Additional header is not present")
+      start()
+
+asyncTest "Fauxjax will not mock request if headers do not match", ->
+  $.fauxjax.new
+    type: "GET"
+    url: "/fauxjax-request"
+    responseText: {status: "success"}
+
+  $.ajax
+    type: "GET"
+    url: "/fauxjax-request"
+    headers: {"Authorization": "Basic " + btoa("JarrodCTaylor:password1")}
+    error: (xhr, textStatus) ->
+      ok(true, "We expect to get an error")
+    success: (data, textStatus, xhr) ->
+      ok(false, "Request should not have been mocked. Headers didn't match")
+    complete: (xhr, textStatus) ->
+      start()
+
+asyncTest "Fauxjax will mock request when headers do match", ->
+  $.fauxjax.new
+    type: "GET"
+    url: "/fauxjax-request"
+    headers: {"Authorization": "Basic " + btoa("JarrodCTaylor:password1")}
+    responseText: {status: "success"}
+
+  $.ajax
+    type: "GET"
+    url: "/fauxjax-request"
+    headers: {"Authorization": "Basic " + btoa("JarrodCTaylor:password1")}
+    error: (xhr, textStatus) ->
+      ok(false, "Request should have been mocked. Headers do match")
+    success: (data, textStatus, xhr) ->
+      ok(_.isEqual(data, '{"status":"success"}'), "Response text not a match received: #{data}")
+    complete: (xhr, textStatus) ->
       start()
