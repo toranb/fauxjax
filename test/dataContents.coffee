@@ -1,12 +1,13 @@
 module "Test Fake Vs Real Request Data",
-  setup: ->
+  beforeEach: ->
     @defaultSettings = _.clone($.fauxjax.settings)
     $.fauxjax.settings.responseTime = 0
-  teardown: ->
+  afterEach: ->
     $.fauxjax.clear()
     $.fauxjax.settings = @defaultSettings
 
-asyncTest "When faux and real requests have different data fauxjax does not fake the request", ->
+test "When faux and real requests have different data fauxjax does not fake the request", (assert) ->
+  done = assert.async()
   $.fauxjax.new
     type: "POST"
     url: "/faux-request"
@@ -17,13 +18,14 @@ asyncTest "When faux and real requests have different data fauxjax does not fake
     url: "/faux-request"
     data: {bar: "baz"}
     success: (data, textStatus, xhr) ->
-      ok(false, "Faux data does not match real request data. Request should not have succeed")
+      assert.ok(false, "Faux data does not match real request data. Request should not have succeed")
     error: (xhr, textStatus) ->
-      ok(true, "Faux data does not match real request data. Request should have returned and error")
+      assert.ok(true, "Faux data does not match real request data. Request should have returned and error")
     complete: (xhr, textStatus) ->
-      start()
+      done()
 
-asyncTest "When faux and real request have the save data request is successfully faked", ->
+test "When faux and real request have the save data request is successfully faked", (assert) ->
+  done = assert.async()
   $.fauxjax.new
     type: "POST"
     url: "/faux-request"
@@ -35,14 +37,15 @@ asyncTest "When faux and real request have the save data request is successfully
     url: "/faux-request"
     data: {values: [1, 2, 3]}
     success: (data, textStatus, xhr) ->
-      ok(true, "Request did not succeed and should have been successfully faked")
-      ok(_.isEqual(data, '{"fakeResponse":"Post success"}'), "Response text not a match received: #{data}")
+      assert.ok(true, "Request did not succeed and should have been successfully faked")
+      assert.ok(_.isEqual(data, '{"fakeResponse":"Post success"}'), "Response text not a match received: #{data}")
     error: (xhr, textStatus) ->
-      ok(false, "Faux data does match the real request data. The request should not have returned an error")
+      assert.ok(false, "Faux data does match the real request data. The request should not have returned an error")
     complete: (xhr, textStatus) ->
-      start()
+      done()
 
-asyncTest "Correctly matches request data when empty objects", ->
+test "Correctly matches request data when empty objects", (assert) ->
+  done = assert.async()
   $.fauxjax.new
     type: "POST"
     url: "/faux-request"
@@ -54,13 +57,14 @@ asyncTest "Correctly matches request data when empty objects", ->
     url: "/faux-request"
     data: {}
     success: (data, textStatus, xhr) ->
-      ok(true, "Request did not succeed and should have been successfully faked")
+      assert.ok(true, "Request did not succeed and should have been successfully faked")
     error: (xhr, textStatus) ->
-      ok(false, "Error was returned from a request that should have successfully been faked")
+      assert.ok(false, "Error was returned from a request that should have successfully been faked")
     complete: (xhr, textStatus) ->
-      start()
+      done()
 
-asyncTest "Data can be Undefined and Null and will still be succeffully mocked", ->
+test "Data can be Undefined and Null and will still be succeffully mocked", (assert) ->
+  done = assert.async()
   $.fauxjax.new
     type: "GET"
     url: "/faux-request"
@@ -72,8 +76,8 @@ asyncTest "Data can be Undefined and Null and will still be succeffully mocked",
     url: "/faux-request"
     data: undefined
     success: (data, textStatus, xhr) ->
-      ok(true, "Request did not succeed and should have been successfully faked")
+      assert.ok(true, "Request did not succeed and should have been successfully faked")
     error: (xhr, textStatus) ->
-      ok(false, "Error was returned from a request that should have successfully been faked")
+      asert.ok(false, "Error was returned from a request that should have successfully been faked")
     complete: (xhr, textStatus) ->
-      start()
+      done()

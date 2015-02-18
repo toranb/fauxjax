@@ -1,12 +1,13 @@
 module "Promises Tests",
-  setup: ->
+  beforeEach: ->
     @defaultSettings = _.clone($.fauxjax.settings)
     $.fauxjax.settings.responseTime = 0
-  teardown: ->
+  afterEach: ->
     $.fauxjax.clear()
     $.fauxjax.settings = @defaultSettings
 
-asyncTest "Faked calls have access to the done promise callback", ->
+test "Faked calls have access to the done promise callback", (assert) ->
+  done = assert.async()
   $.fauxjax.new
     type: "GET"
     url: "http://faux-request"
@@ -16,10 +17,11 @@ asyncTest "Faked calls have access to the done promise callback", ->
     type: "GET"
     url: "http://faux-request"
   ).done (data, textStatus, jqXHR) ->
-    equal(data, "Told you I would come through")
-    start()
+    assert.equal(data, "Told you I would come through")
+    done()
 
-asyncTest "Faked calls have access to the then promise callback", ->
+test "Faked calls have access to the then promise callback", (assert) ->
+  done = assert.async()
   $.fauxjax.new
     type: "GET"
     url: "http://faux-request"
@@ -29,10 +31,11 @@ asyncTest "Faked calls have access to the then promise callback", ->
     type: "GET"
     url: "http://faux-request"
   ).then (data, statusText, xhr) ->
-    equal(data, "Then do what you like")
-    start()
+    assert.equal(data, "Then do what you like")
+    done()
 
-asyncTest "Faked calls have access to the fail promise callback", ->
+test "Faked calls have access to the fail promise callback", (assert) ->
+  done = assert.async()
   $.fauxjax.new
     type: "GET"
     url: "http://faux-request"
@@ -44,10 +47,11 @@ asyncTest "Faked calls have access to the fail promise callback", ->
     type: "GET"
     url: "http://faux-request"
   ).fail (jqXHR, textStatus, errorThrown) ->
-    equal(errorThrown, "Request failed")
-    start()
+    assert.equal(errorThrown, "Request failed")
+    done()
 
-asyncTest "Faked calls have access to the always promise callback", ->
+test "Faked calls have access to the always promise callback", (assert) ->
+  done = assert.async()
   $.fauxjax.new
     type: "GET"
     url: "http://faux-request"
@@ -58,5 +62,5 @@ asyncTest "Faked calls have access to the always promise callback", ->
     type: "GET"
     url: "http://faux-request"
   ).always (jqXHR, textStatus, errorThrown) ->
-    equal(jqXHR.responseText, "Old faithful")
-    start()
+    assert.equal(jqXHR.responseText, "Old faithful")
+    done()

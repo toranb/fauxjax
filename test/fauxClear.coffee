@@ -1,12 +1,15 @@
 module "Test Fauxjax clear options",
-  setup: ->
+  beforeEach: ->
     @defaultSettings = _.clone($.fauxjax.settings)
     $.fauxjax.settings.responseTime = 0
-  teardown: ->
+  afterEach: ->
     $.fauxjax.clear()
     $.fauxjax.settings = @defaultSettings
 
-asyncTest "Remove fauxjax definition by id", ->
+test "Remove fauxjax definition by id", (assert) ->
+  done1 = assert.async()
+  done2 = assert.async()
+
   id = $.fauxjax.new
     type: "GET"
     url: "faux-request"
@@ -15,13 +18,12 @@ asyncTest "Remove fauxjax definition by id", ->
   $.ajax
     url: "faux-request"
     success: (data, textStatus, xhr) ->
-      equal(data, "test", "Response from fake was not what was expected")
+      assert.equal(data, "test", "Response from fake was not what was expected")
     error: (xhr, textStatus) ->
-      ok(false, "Response should have been successfully faked")
+      assert.ok(false, "Response should have been successfully faked")
     complete: (xhr, textStatus) ->
-      start()
+      done1()
 
-  stop()
   $.fauxjax.remove(id)
 
   $.fauxjax.new
@@ -31,13 +33,13 @@ asyncTest "Remove fauxjax definition by id", ->
   $.ajax
     url: "faux-request"
     success: (data, textStatus, xhr) ->
-      equal(data, "default", "Response from fake was not what was expected: #{data}")
+      assert.equal(data, "default", "Response from fake was not what was expected: #{data}")
     error: (xhr, textStatus) ->
-      ok(false, "Response should have been successfully faked")
+      assert.ok(false, "Response should have been successfully faked")
     complete: (xhr, textStatus) ->
-      start()
+      done2()
 
-test "Remove fauxjax definition by id when mutiple exist", ->
+test "Remove fauxjax definition by id when mutiple exist", (assert) ->
   id = $.fauxjax.new(
     type: "GET"
     url: "/faux-request/two"
@@ -52,6 +54,6 @@ test "Remove fauxjax definition by id when mutiple exist", ->
     responseText: "test"
   )
 
-  equal(2, $.fauxjax.unfired().length)
+  assert.equal(2, $.fauxjax.unfired().length)
   $.fauxjax.remove(id)
-  equal(1, $.fauxjax.unfired().length)
+  assert.equal(1, $.fauxjax.unfired().length)

@@ -1,24 +1,17 @@
 module "Connection Simulation Tests",
-  setup: ->
+  beforeEach: ->
     @defaultSettings = _.clone($.fauxjax.settings)
-
-    $.fauxjax.new
-      url: "/faux-slower"
-      responseTime: 150
 
     $.fauxjax.new
       url: "/faux-regular"
       responseTime: 50
 
-    $.fauxjax.new
-      url: "/faux-fase"
-      responseTime: 0
-
-  teardown: ->
+  afterEach: ->
     $.fauxjax.clear()
     $.fauxjax.settings = @defaultSettings
 
-asyncTest "Async test", ->
+test "Async test", (assert) ->
+  done = assert.async()
   order = []
 
   $.ajax
@@ -27,15 +20,15 @@ asyncTest "Async test", ->
     success: (data, textStatus, xhr) ->
       order.push("b")
     error: (xhr, textStatus) ->
-      ok(false, "Error was returned from a request that should have successfully been faked")
+      assert.ok(false, "Error was returned from a request that should have successfully been faked")
     complete: (xhr, textStatus) ->
-      ok(_.isEqual(order, ["a", "b"]))
-      start()
+      assert.ok(_.isEqual(order, ["a", "b"]))
+      done()
 
   order.push("a")
-  ok(_.isEqual(order, ["a"]))
+  assert.ok(_.isEqual(order, ["a"]))
 
-test "Sync test", ->
+test "Sync test", (assert) ->
   order = []
 
   $.ajax
@@ -44,34 +37,46 @@ test "Sync test", ->
     async: false
     success: (data, textStatus, xhr) ->
       order.push("b")
-      ok(_.isEqual(order, ["b"]))
+      assert.ok(_.isEqual(order, ["b"]))
     error: (xhr, textStatus) ->
-      ok(false, "Error was returned from a request that should have successfully been faked")
+      assert.ok(false, "Error was returned from a request that should have successfully been faked")
 
   order.push("a")
-  ok(_.isEqual(order, ["b", "a"]))
+  assert.ok(_.isEqual(order, ["b", "a"]))
 
-asyncTest "Fauxjax response time is correctly simulated", ->
+test "Fauxjax response time is correctly simulated", (assert) ->
+  done = assert.async()
+
+  $.fauxjax.new
+    url: "/faux-slower"
+    responseTime: 150
+
   startTime = new Date()
   $.ajax
     type: "GET"
     url: "/faux-slower"
     complete: (xhr, textStatus) ->
       actualDelay = ((new Date()) - startTime)
-      ok(actualDelay >= 150, "Fauxjax response time was set to 150 the acutal delay was: #{actualDelay}")
-      start()
+      assert.ok(actualDelay >= 150, "Fauxjax response time was set to 150 the acutal delay was: #{actualDelay}")
+      done()
 
-asyncTest "Fauxjax response time is correctly simulated fast", ->
+test "Fauxjax response time is correctly simulated fast", (assert) ->
+  done = assert.async()
+  $.fauxjax.new
+    url: "/faux-fast"
+    responseTime: 0
+
   startTime = new Date()
   $.ajax
     type: "GET"
     url: "/faux-fast"
     complete: (xhr, textStatus) ->
       actualDelay = ((new Date()) - startTime)
-      ok(actualDelay < 9, "Fauxjax response time was set to 0 the acutal delay was: #{actualDelay}")
-      start()
+      assert.ok(actualDelay < 40, "Fauxjax response time was set to 0 the acutal delay was: #{actualDelay}")
+      done()
 
-asyncTest "Forcing timeout", ->
+test "Forcing timeout", (assert) ->
+  done = assert.async()
   $.fauxjax.new
     type: "GET"
     url: "/fauxjax-request"
@@ -79,10 +84,11 @@ asyncTest "Forcing timeout", ->
     isTimeout: true
 
   $.ajax
+    type: "GET"
     url: "/fauxjax-request"
     success: (data, textStatus, xhr) ->
-      ok(false, "isTimeout was set to true so reuqest should not have successfully returned")
+      assert.ok(false, "isTimeout was set to true so reuqest should not have successfully returned")
     error: (xhr, textStatus) ->
-      ok(true, "isTimeout was set to true so request should have returned an error")
+      assert.ok(true, "isTimeout was set to true so request should have returned an error")
     complete: (xhr, textStatus) ->
-      start()
+      done()

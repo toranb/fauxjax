@@ -1,12 +1,13 @@
 module "Test Fake Vs Real Request URL",
-  setup: ->
+  beforeEach: ->
     @defaultSettings = _.clone($.fauxjax.settings)
     $.fauxjax.settings.responseTime = 0
-  teardown: ->
+  afterEach: ->
     $.fauxjax.clear()
     $.fauxjax.settings = @defaultSettings
 
-asyncTest "When faux and real requests have different urls fauxjax does not fake request", ->
+test "When faux and real requests have different urls fauxjax does not fake request", (assert) ->
+  done = assert.async()
   $.fauxjax.new
     type: "POST"
     url: "/faux-request/something"
@@ -19,13 +20,14 @@ asyncTest "When faux and real requests have different urls fauxjax does not fake
     url: "/faux-request"
     data: {empty: "data"}
     success: (data, textStatus, xhr) ->
-      ok(false, "Faux request url does not match real request url. Request should not have succeed")
+      assert.ok(false, "Faux request url does not match real request url. Request should not have succeed")
     error: (xhr, textStatus) ->
-      ok(true, "Faux request url does not match real request url. Request should have returned and error")
+      assert.ok(true, "Faux request url does not match real request url. Request should have returned and error")
     complete: (xhr, textStatus) ->
-      start()
+      done()
 
-asyncTest "When faux and real requests have the same urls fauxjax does fake request", ->
+test "When faux and real requests have the same urls fauxjax does fake request", (assert) ->
+  done = assert.async()
   $.fauxjax.new
     type: "GET"
     url: "/faux-request"
@@ -36,8 +38,8 @@ asyncTest "When faux and real requests have the same urls fauxjax does fake requ
     type: "GET"
     url: "/faux-request"
     success: (data, textStatus, xhr) ->
-      ok(true, "Faux request url does match real request url. Request should have succeed")
+      assert.ok(true, "Faux request url does match real request url. Request should have succeed")
     error: (xhr, textStatus) ->
-      ok(false, "Faux request url does match real request url. Request should not have returned an error")
+      assert.ok(false, "Faux request url does match real request url. Request should not have returned an error")
     complete: (xhr, textStatus) ->
-      start()
+      done()

@@ -1,12 +1,13 @@
 module "Test Fake Vs Real Request Type",
-  setup: ->
+  beforeEach: ->
     @defaultSettings = _.clone($.fauxjax.settings)
     $.fauxjax.settings.responseTime = 0
-  teardown: ->
+  afterEach: ->
     $.fauxjax.clear()
     $.fauxjax.settings = @defaultSettings
 
-asyncTest "When faux and real requests have different request types fauxjax does not fake request POST vs PATCH", ->
+test "When faux and real requests have different request types fauxjax does not fake request POST vs PATCH", (assert) ->
+  done = assert.async()
   $.fauxjax.new
     type: "POST"
     url: "/faux-request"
@@ -19,13 +20,14 @@ asyncTest "When faux and real requests have different request types fauxjax does
     url: "/faux-request"
     data: {foo: "bar"}
     success: (data, textStatus, xhr) ->
-      ok(false, "Faux request type does not match real request request type. Request should not have succeed")
+      assert.ok(false, "Faux request type does not match real request request type. Request should not have succeed")
     error: (xhr, textStatus) ->
-      ok(true, "Faux request type does not match real request request type. Request should have returned and error")
+      assert.ok(true, "Faux request type does not match real request request. Request should have returned and error")
     complete: (xhr, textStatus) ->
-      start()
+      done()
 
-asyncTest "When faux and real requests have different request types fauxjax does not fake request POST vs GET", ->
+test "When faux and real requests have different request types fauxjax does not fake request POST vs GET", (assert) ->
+  done = assert.async()
   $.fauxjax.new
     type: "POST"
     url: "/faux-request"
@@ -37,13 +39,14 @@ asyncTest "When faux and real requests have different request types fauxjax does
     type: "GET"
     url: "/faux-request"
     success: (data, textStatus, xhr) ->
-      ok(false, "Faux request type does not match real request request type. Request should not have succeed")
+      assert.ok(false, "Faux request type does not match real request request type. Request should not have succeed")
     error: (xhr, textStatus) ->
-      ok(true, "Faux request type does not match real request request type. Request should have returned and error")
+      assert.ok(true, "Faux request type does not match real request request. Request should have returned and error")
     complete: (xhr, textStatus) ->
-      start()
+      done()
 
-asyncTest "When faux and real requests have different request types fauxjax does not fake request POST vs PUT", ->
+test "When faux and real requests have different request types fauxjax does not fake request POST vs PUT", (assert) ->
+  done = assert.async()
   $.fauxjax.new
     type: "POST"
     url: "/faux-request"
@@ -56,13 +59,14 @@ asyncTest "When faux and real requests have different request types fauxjax does
     url: "/faux-request"
     data: {empty: "data"}
     success: (data, textStatus, xhr) ->
-      ok(false, "Faux request type does not match real request request type. Request should not have succeed")
+      assert.ok(false, "Faux request type does not match real request request type. Request should not have succeed")
     error: (xhr, textStatus) ->
-      ok(true, "Faux request type does not match real request request type. Request should have returned and error")
+      assert.ok(true, "Faux request type does not match real request request. Request should have returned and error")
     complete: (xhr, textStatus) ->
-      start()
+      done()
 
-asyncTest "When faux and real requests have the same request types fauxjax does fake request GET vs GET", ->
+test "When faux and real requests have the same request types fauxjax does fake request GET vs GET", (assert) ->
+  done = assert.async()
   $.fauxjax.new
     type: "GET"
     url: "/faux-request"
@@ -73,14 +77,15 @@ asyncTest "When faux and real requests have the same request types fauxjax does 
     type: "GET"
     url: "/faux-request"
     success: (data, textStatus, xhr) ->
-      ok(true, "Faux request type does match real request type. Request should have succeed")
-      ok(_.isEqual(data, '{"foo":"bar"}'))
+      assert.ok(true, "Faux request type does match real request type. Request should have succeed")
+      assert.ok(_.isEqual(data, '{"foo":"bar"}'))
     error: (xhr, textStatus) ->
-      ok(false, "Faux request does match real request data. Request should not have returned and error")
+      assert.ok(false, "Faux request does match real request data. Request should not have returned and error")
     complete: (xhr, textStatus) ->
-      start()
+      done()
 
-asyncTest "Case-insensitive matching for request types", ->
+test "Case-insensitive matching for request types", (assert) ->
+  done = assert.async()
   $.fauxjax.new
     url: "/faux-request"
     type: "GET"
@@ -90,12 +95,14 @@ asyncTest "Case-insensitive matching for request types", ->
     url: "/faux-request"
     type: "get"
     error: (xhr, textStatus) ->
-      ok(false, "We should match request type case insensitive")
+      assert.ok(false, "We should match request type case insensitive")
     complete: (xhr, textStatus) ->
-      equal(xhr.responseText, "Uppercase", "Response text was not a match")
-      start()
+      assert.equal(xhr.responseText, "Uppercase", "Response text was not a match")
+      done()
 
-asyncTest "Multiple handlers can exist for the same url with different verbs", ->
+test "Multiple handlers can exist for the same url with different verbs", (assert) ->
+  done1 = assert.async()
+  done2 = assert.async()
   $.fauxjax.new
     type: "GET"
     url: "/faux-request"
@@ -110,17 +117,15 @@ asyncTest "Multiple handlers can exist for the same url with different verbs", -
     type: "GET"
     url: "/faux-request"
     success: (data, textStatus, xhr) ->
-      ok(true, "Handler with a GET verb does exist for this request it should be successfully mocked")
+      assert.ok(true, "Handler with a GET verb does exist for this request it should be successfully mocked")
     complete: (xhr, textStatus) ->
-      start()
-
-  stop()
+      done1()
 
   $.ajax
     type: "POST"
     url: "/faux-request"
     data: {empty: "data"}
     success: (data, textStatus, xhr) ->
-      ok(true, "Handler with a POST verb does exist for this request it should be successfully mocked")
+      assert.ok(true, "Handler with a POST verb does exist for this request it should be successfully mocked")
     complete: (xhr, textStatus) ->
-      start()
+      done2()

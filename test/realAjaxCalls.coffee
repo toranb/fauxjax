@@ -1,39 +1,42 @@
 module "unhandled array tests",
-  setup: ->
+  beforeEach: ->
     @defaultSettings = _.clone($.fauxjax.settings)
     $.fauxjax.settings.responseTime = 0
-  teardown: ->
+  afterEach: ->
     $.fauxjax.clear()
     $.fauxjax.settings = @defaultSettings
 
-asyncTest "unhandled array correctly collects real ajax calls", ->
+test "unhandled array correctly collects real ajax calls", (assert) ->
+  done = assert.async()
 
   $.ajax
     type: "GET"
     url: "/faux-request"
     complete: (xhr, textStatus) ->
       unhandled = $.fauxjax.unhandled()
-      equal(unhandled.length, 1, "incorrect number of real ajax calls in unhandled array")
-      equal(unhandled[0].type, "GET", "request has incorrect type")
-      equal(unhandled[0].url, "/faux-request", "real ajax call has incorrect url")
-      start()
+      assert.equal(unhandled.length, 1, "incorrect number of real ajax calls in unhandled array")
+      assert.equal(unhandled[0].type, "GET", "request has incorrect type")
+      assert.equal(unhandled[0].url, "/faux-request", "real ajax call has incorrect url")
+      done()
 
-asyncTest "unhandled array is cleared when fauxjax.clear is called", ->
+test "unhandled array is cleared when fauxjax.clear is called", (assert) ->
+  done = assert.async()
 
   $.ajax
     type: "GET"
     url: "/faux-request"
     complete: (xhr, textStatus) ->
       unhandled = $.fauxjax.unhandled()
-      equal(unhandled.length, 1, "incorrect number of real ajax calls in unhandled array")
-      equal(unhandled[0].type, "GET", "request has incorrect type")
-      equal(unhandled[0].url, "/faux-request", "real ajax call has incorrect url")
+      assert.equal(unhandled.length, 1, "incorrect number of real ajax calls in unhandled array")
+      assert.equal(unhandled[0].type, "GET", "request has incorrect type")
+      assert.equal(unhandled[0].url, "/faux-request", "real ajax call has incorrect url")
       $.fauxjax.clear()
       unhandled = $.fauxjax.unhandled()
-      equal(unhandled.length, 0, "unhandled was not properly cleared")
-      start()
+      assert.equal(unhandled.length, 0, "unhandled was not properly cleared")
+      done()
 
-asyncTest "unhandled array returns nothing when no actual ajax calls occur", ->
+test "unhandled array returns nothing when no actual ajax calls occur", (assert) ->
+  done = assert.async()
   $.fauxjax.new
     type: "GET"
     url: "/faux-request"
@@ -43,5 +46,5 @@ asyncTest "unhandled array returns nothing when no actual ajax calls occur", ->
     url: "/faux-request"
     complete: (xhr, textStatus) ->
       unhandled = $.fauxjax.unhandled()
-      equal(unhandled.length, 0, "No unhandled should have occured")
-      start()
+      assert.equal(unhandled.length, 0, "No unhandled should have occured")
+      done()
