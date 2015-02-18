@@ -19,6 +19,10 @@ test "unhandled array correctly collects real ajax calls", (assert) ->
       assert.equal(unhandled[0].url, "/faux-request", "real ajax call has incorrect url")
       done()
 
+  # As of Qunit 1.16.0 we cannot return a failing ajax request.
+  # https://github.com/jquery/qunit/releases/tag/1.16.0
+  return true
+
 test "unhandled array is cleared when fauxjax.clear is called", (assert) ->
   done = assert.async()
 
@@ -34,6 +38,10 @@ test "unhandled array is cleared when fauxjax.clear is called", (assert) ->
       unhandled = $.fauxjax.unhandled()
       assert.equal(unhandled.length, 0, "unhandled was not properly cleared")
       done()
+
+  # As of Qunit 1.16.0 we cannot return a failing ajax request.
+  # https://github.com/jquery/qunit/releases/tag/1.16.0
+  return true
 
 test "unhandled array returns nothing when no actual ajax calls occur", (assert) ->
   done = assert.async()

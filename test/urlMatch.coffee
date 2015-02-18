@@ -26,6 +26,11 @@ test "When faux and real requests have different urls fauxjax does not fake requ
     complete: (xhr, textStatus) ->
       done()
 
+  # As of Qunit 1.16.0 we cannot return a failing ajax request.
+  # https://github.com/jquery/qunit/releases/tag/1.16.0
+  return true
+
+
 test "When faux and real requests have the same urls fauxjax does fake request", (assert) ->
   done = assert.async()
   $.fauxjax.new

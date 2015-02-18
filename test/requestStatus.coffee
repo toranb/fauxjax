@@ -22,6 +22,10 @@ test "Fauxjax with status of 500 returns an error and status is 500", (assert) -
       assert.equal(xhr.status, 500, "Fauxjax was created with an error of 500 actually returned: #{xhr.status}")
       done()
 
+  # As of Qunit 1.16.0 we cannot return a failing ajax request.
+  # https://github.com/jquery/qunit/releases/tag/1.16.0
+  return true
+
 test "Fauxjax with status of 404 returns an error and status is 404", (assert) ->
   done = assert.async()
   $.fauxjax.new
@@ -37,6 +41,10 @@ test "Fauxjax with status of 404 returns an error and status is 404", (assert) -
     complete: (xhr, textStatus) ->
       assert.equal(xhr.status, 404, "Fauxjax was created with an error of 404 actually returned: #{xhr.status}")
       done()
+
+  # As of Qunit 1.16.0 we cannot return a failing ajax request.
+  # https://github.com/jquery/qunit/releases/tag/1.16.0
+  return true
 
 test "Fauxjax with status of 200 returns a success and status is 200", (assert) ->
   done = assert.async()

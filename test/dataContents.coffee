@@ -24,6 +24,10 @@ test "When faux and real requests have different data fauxjax does not fake the 
     complete: (xhr, textStatus) ->
       done()
 
+  # As of Qunit 1.16.0 we cannot return a failing ajax request.
+  # https://github.com/jquery/qunit/releases/tag/1.16.0
+  return true
+
 test "When faux and real request have the save data request is successfully faked", (assert) ->
   done = assert.async()
   $.fauxjax.new

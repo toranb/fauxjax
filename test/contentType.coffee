@@ -51,3 +51,7 @@ test "When faux and real requests have different contentType fauxjax will not mo
       assert.ok(true, "The contentType does not match the request and the faux this should produce and error")
     complete: (xhr, textStatus) ->
       done()
+
+  # As of Qunit 1.16.0 we cannot return a failing ajax request.
+  # https://github.com/jquery/qunit/releases/tag/1.16.0
+  return true

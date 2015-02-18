@@ -106,6 +106,10 @@ test "Fauxjax will not mock request if headers do not match", (assert) ->
     complete: (xhr, textStatus) ->
       done()
 
+  # As of Qunit 1.16.0 we cannot return a failing ajax request.
+  # https://github.com/jquery/qunit/releases/tag/1.16.0
+  return true
+
 test "Fauxjax will mock request when headers do match", (assert) ->
   done = assert.async()
   $.fauxjax.new

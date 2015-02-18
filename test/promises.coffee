@@ -50,6 +50,10 @@ test "Faked calls have access to the fail promise callback", (assert) ->
     assert.equal(errorThrown, "Request failed")
     done()
 
+  # As of Qunit 1.16.0 we cannot return a failing ajax request.
+  # https://github.com/jquery/qunit/releases/tag/1.16.0
+  return true
+
 test "Faked calls have access to the always promise callback", (assert) ->
   done = assert.async()
   $.fauxjax.new
@@ -64,3 +68,7 @@ test "Faked calls have access to the always promise callback", (assert) ->
   ).always (jqXHR, textStatus, errorThrown) ->
     assert.equal(jqXHR.responseText, "Old faithful")
     done()
+
+  # As of Qunit 1.16.0 we cannot return a failing ajax request.
+  # https://github.com/jquery/qunit/releases/tag/1.16.0
+  return true

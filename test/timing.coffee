@@ -92,3 +92,7 @@ test "Forcing timeout", (assert) ->
       assert.ok(true, "isTimeout was set to true so request should have returned an error")
     complete: (xhr, textStatus) ->
       done()
+
+  # As of Qunit 1.16.0 we cannot return a failing ajax request.
+  # https://github.com/jquery/qunit/releases/tag/1.16.0
+  return true

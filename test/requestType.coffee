@@ -26,6 +26,10 @@ test "When faux and real requests have different request types fauxjax does not 
     complete: (xhr, textStatus) ->
       done()
 
+  # As of Qunit 1.16.0 we cannot return a failing ajax request.
+  # https://github.com/jquery/qunit/releases/tag/1.16.0
+  return true
+
 test "When faux and real requests have different request types fauxjax does not fake request POST vs GET", (assert) ->
   done = assert.async()
   $.fauxjax.new
@@ -44,6 +48,10 @@ test "When faux and real requests have different request types fauxjax does not 
       assert.ok(true, "Faux request type does not match real request request. Request should have returned and error")
     complete: (xhr, textStatus) ->
       done()
+
+  # As of Qunit 1.16.0 we cannot return a failing ajax request.
+  # https://github.com/jquery/qunit/releases/tag/1.16.0
+  return true
 
 test "When faux and real requests have different request types fauxjax does not fake request POST vs PUT", (assert) ->
   done = assert.async()
@@ -64,6 +72,10 @@ test "When faux and real requests have different request types fauxjax does not 
       assert.ok(true, "Faux request type does not match real request request. Request should have returned and error")
     complete: (xhr, textStatus) ->
       done()
+
+  # As of Qunit 1.16.0 we cannot return a failing ajax request.
+  # https://github.com/jquery/qunit/releases/tag/1.16.0
+  return true
 
 test "When faux and real requests have the same request types fauxjax does fake request GET vs GET", (assert) ->
   done = assert.async()
