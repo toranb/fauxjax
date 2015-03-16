@@ -11,15 +11,15 @@ A jQuery plugin that provides the ability to mock ajax requests during testing a
 Fauxjax is a rewrite of a subset of features offered by [mockjax](https://github.com/jakerella/jquery-mockjax).
 While this library is a total rewrite, the majority of the credit still belongs to the authors and maintainers of mockjax.
 
+# :rotating_light: Dependencies :rotating_light:
+
+Fauxjax requires jQuery 2.x it will not work with 1.X
+
 # Installation
 
 ``` shell
 bower install fauxjax
 ```
-
-# Dependencies
-
-Fauxjax currently supports jQuery 2.x
 
 # Documentation
 
