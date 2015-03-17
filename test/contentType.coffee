@@ -55,3 +55,26 @@ test "When faux and real requests have different contentType fauxjax will not mo
   # As of Qunit 1.16.0 we cannot return a failing ajax request.
   # https://github.com/jquery/qunit/releases/tag/1.16.0
   return true
+
+test "Fauxjax can handle text/json content type", (assert) ->
+  done = assert.async()
+  $.fauxjax.new
+    type: "POST"
+    url: "/faux-request"
+    dataType: "json"
+    data: {name: "Johnny Utah"}
+    contentType: "text/json"
+    responseText: {foo: "bar"}
+
+  $.ajax
+    type: "POST"
+    url: "/faux-request"
+    data: {name: "Johnny Utah"}
+    contentType: "text/json"
+    success: (data, textStatus, xhr) ->
+      assert.ok(true, "Faux request type does match real request type. Request should have succeed")
+      assert.ok(_.isEqual(data, {"foo":"bar"}))
+    error: (xhr, textStatus) ->
+      assert.ok(false, "Faux request does match real request data. Request should not have returned and error")
+    complete: (xhr, textStatus) ->
+      done()
