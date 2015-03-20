@@ -14,7 +14,7 @@ test "Get unfired handlers", (assert) ->
     url: "/faux-request/2"
 
   $.ajax
-    type: "GET"
+    method: "GET"
     url: "/faux-request/1"
     complete: ->
       handlersNotFired = $.fauxjax.unfired()

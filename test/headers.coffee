@@ -9,14 +9,14 @@ module "Header Tests",
 test "Fauxjax request correctly returns html", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    type: "POST"
+    method: "POST"
     url: "/faux-request"
     contentType: "text/html"
     data: {some: "post"}
     responseText: "<div>WINNING</div>"
 
   $.ajax
-    type: "POST"
+    method: "POST"
     url: "/faux-request"
     dataType: "html"
     data: {some: "post"}
@@ -32,14 +32,14 @@ test "Fauxjax request correctly returns html", (assert) ->
 test "Fauxjax request correctly returns json", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    type: "POST"
+    method: "POST"
     url: "/faux-request"
     contentType: "application/json"
     data: {filler: "text"}
     responseText: {foo: "bar", baz: {car: "far"}}
 
   $.ajax
-    type: "POST"
+    method: "POST"
     url: "/faux-request"
     dataType: "json"
     data: {filler: "text"}
@@ -71,13 +71,13 @@ test "Fauxjax request correctly returns text by default", (assert) ->
 test "Fauxjax can set additional response headers", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    type: "GET"
+    method: "GET"
     url: "/fauxjax-request"
     headers: {"Something-Useful": "yes"}
     responseText: "done"
 
   $.ajax
-    type: "GET"
+    method: "GET"
     url: "/fauxjax-request"
     headers: {"Something-Useful": "yes"}
     error: (xhr, textStatus) ->
@@ -91,12 +91,12 @@ test "Fauxjax can set additional response headers", (assert) ->
 test "Fauxjax will not mock request if headers do not match", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    type: "GET"
+    method: "GET"
     url: "/fauxjax-request"
     responseText: {status: "success"}
 
   $.ajax
-    type: "GET"
+    method: "GET"
     url: "/fauxjax-request"
     headers: {"Authorization": "Basic " + btoa("JarrodCTaylor:password1")}
     error: (xhr, textStatus) ->
@@ -113,13 +113,13 @@ test "Fauxjax will not mock request if headers do not match", (assert) ->
 test "Fauxjax will mock request when headers do match", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    type: "GET"
+    method: "GET"
     url: "/fauxjax-request"
     headers: {"Authorization": "Basic " + btoa("JarrodCTaylor:password1")}
     responseText: {status: "success"}
 
   $.ajax
-    type: "GET"
+    method: "GET"
     url: "/fauxjax-request"
     headers: {"Authorization": "Basic " + btoa("JarrodCTaylor:password1")}
     error: (xhr, textStatus) ->

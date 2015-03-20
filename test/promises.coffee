@@ -9,12 +9,12 @@ module "Promises Tests",
 test "Faked calls have access to the done promise callback", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    type: "GET"
+    method: "GET"
     url: "http://faux-request"
     responseText: "Told you I would come through"
 
   $.ajax(
-    type: "GET"
+    method: "GET"
     url: "http://faux-request"
   ).done (data, textStatus, jqXHR) ->
     assert.equal(data, "Told you I would come through")
@@ -23,12 +23,12 @@ test "Faked calls have access to the done promise callback", (assert) ->
 test "Faked calls have access to the then promise callback", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    type: "GET"
+    method: "GET"
     url: "http://faux-request"
     responseText: "Then do what you like"
 
   $.ajax(
-    type: "GET"
+    method: "GET"
     url: "http://faux-request"
   ).then (data, statusText, xhr) ->
     assert.equal(data, "Then do what you like")
@@ -37,14 +37,14 @@ test "Faked calls have access to the then promise callback", (assert) ->
 test "Faked calls have access to the fail promise callback", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    type: "GET"
+    method: "GET"
     url: "http://faux-request"
     status: 404
     statusText: "Request failed"
     isTimeout: true
 
   $.ajax(
-    type: "GET"
+    method: "GET"
     url: "http://faux-request"
   ).fail (jqXHR, textStatus, errorThrown) ->
     assert.equal(errorThrown, "Request failed")
@@ -57,13 +57,13 @@ test "Faked calls have access to the fail promise callback", (assert) ->
 test "Faked calls have access to the always promise callback", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    type: "GET"
+    method: "GET"
     url: "http://faux-request"
     isTimeout: true
     responseText: "Old faithful"
 
   $.ajax(
-    type: "GET"
+    method: "GET"
     url: "http://faux-request"
   ).always (jqXHR, textStatus, errorThrown) ->
     assert.equal(jqXHR.responseText, "Old faithful")

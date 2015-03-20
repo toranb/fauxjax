@@ -106,7 +106,7 @@
         if (mockHandler.contentType && realRequestContext.contentType && !_.isEqual(mockHandler.contentType, realRequestContext.contentType)) {
             return false;
         }
-        if (mockHandler.type && mockHandler.type.toLowerCase() != realRequestContext.type.toLowerCase()) {
+        if (mockHandler.method && mockHandler.method.toLowerCase() != realRequestContext.method.toLowerCase()) {
             return false;
         }
         if (!_.isEqual(mockHandler.headers, realRequestContext.headers)) {

@@ -19,11 +19,12 @@ test "Success callback should have access to xhr object", (assert) ->
   done = assert.async()
 
   $.fauxjax.new
-    type: "GET"
+    method: "GET"
     url: "/faux-request"
     status: 200
 
   $.ajax
+    method: "GET"
     url: "/faux-request"
     success: (data, textStatus, xhr) ->
       assert.ok(xhr, "No xhr object passed to success")

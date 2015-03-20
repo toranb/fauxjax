@@ -22,7 +22,7 @@ test "When faux and real requests have the same contentType fauxjax will mock th
     data: {name: "Johnny Utah"}
     contentType: "application/json"
     success: (data, textStatus, xhr) ->
-      assert.ok(true, "Faux request type does match real request type. Request should have succeed")
+      assert.ok(true, "Faux request contentType does match real request contentType. Request should have succeed")
       assert.ok(_.isEqual(data, {"foo":"bar"}))
     error: (xhr, textStatus) ->
       assert.ok(false, "Faux request does match real request data. Request should not have returned and error")
@@ -59,7 +59,7 @@ test "When faux and real requests have different contentType fauxjax will not mo
 test "Fauxjax can handle text/json content type", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    type: "POST"
+    method: "POST"
     url: "/faux-request"
     dataType: "json"
     data: {name: "Johnny Utah"}
@@ -67,12 +67,12 @@ test "Fauxjax can handle text/json content type", (assert) ->
     responseText: {foo: "bar"}
 
   $.ajax
-    type: "POST"
+    method: "POST"
     url: "/faux-request"
     data: {name: "Johnny Utah"}
     contentType: "text/json"
     success: (data, textStatus, xhr) ->
-      assert.ok(true, "Faux request type does match real request type. Request should have succeed")
+      assert.ok(true, "Faux request contentType does match real request contentType. Request should have succeed")
       assert.ok(_.isEqual(data, {"foo":"bar"}))
     error: (xhr, textStatus) ->
       assert.ok(false, "Faux request does match real request data. Request should not have returned and error")

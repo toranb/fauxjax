@@ -9,14 +9,14 @@ module "Test Fake Vs Real Request URL",
 test "When faux and real requests have different urls fauxjax does not fake request", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    type: "POST"
+    method: "POST"
     url: "/faux-request/something"
     dataType: "json"
     data: {empty: "data"}
     responseText: {foo: "bar"}
 
   $.ajax
-    type: "POST"
+    method: "POST"
     url: "/faux-request"
     data: {empty: "data"}
     success: (data, textStatus, xhr) ->
@@ -34,13 +34,13 @@ test "When faux and real requests have different urls fauxjax does not fake requ
 test "When faux and real requests have the same urls fauxjax does fake request", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    type: "GET"
+    method: "GET"
     url: "/faux-request"
     dataType: "json"
     responseText: {foo: "bar"}
 
   $.ajax
-    type: "GET"
+    method: "GET"
     url: "/faux-request"
     success: (data, textStatus, xhr) ->
       assert.ok(true, "Faux request url does match real request url. Request should have succeed")

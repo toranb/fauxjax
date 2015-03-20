@@ -11,11 +11,12 @@ test "Remove fauxjax definition by id", (assert) ->
   done2 = assert.async()
 
   id = $.fauxjax.new
-    type: "GET"
+    method: "GET"
     url: "faux-request"
     responseText: "test"
 
   $.ajax
+    method: "GET"
     url: "faux-request"
     success: (data, textStatus, xhr) ->
       assert.equal(data, "test", "Response from fake was not what was expected")
@@ -27,10 +28,12 @@ test "Remove fauxjax definition by id", (assert) ->
   $.fauxjax.remove(id)
 
   $.fauxjax.new
+    method: "GET"
     url: "faux-request"
     responseText: "default"
 
   $.ajax
+    method: "GET"
     url: "faux-request"
     success: (data, textStatus, xhr) ->
       assert.equal(data, "default", "Response from fake was not what was expected: #{data}")
@@ -41,14 +44,14 @@ test "Remove fauxjax definition by id", (assert) ->
 
 test "Remove fauxjax definition by id when mutiple exist", (assert) ->
   id = $.fauxjax.new(
-    type: "GET"
+    method: "GET"
     url: "/faux-request/two"
     contentType: "text/plain"
     responseText: "test"
   )
 
   $.fauxjax.new(
-    type: "GET"
+    method: "GET"
     url: "/faux-request"
     contentType: "text/plain"
     responseText: "test"

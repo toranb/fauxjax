@@ -15,7 +15,7 @@ test "Async test", (assert) ->
   order = []
 
   $.ajax
-    type: "GET"
+    method: "GET"
     url: "/faux-regular"
     success: (data, textStatus, xhr) ->
       order.push("b")
@@ -32,7 +32,7 @@ test "Sync test", (assert) ->
   order = []
 
   $.ajax
-    type: "GET"
+    method: "GET"
     url: "/faux-regular"
     async: false
     success: (data, textStatus, xhr) ->
@@ -53,7 +53,7 @@ test "Fauxjax response time is correctly simulated", (assert) ->
 
   startTime = new Date()
   $.ajax
-    type: "GET"
+    method: "GET"
     url: "/faux-slower"
     complete: (xhr, textStatus) ->
       actualDelay = ((new Date()) - startTime)
@@ -68,7 +68,7 @@ test "Fauxjax response time is correctly simulated fast", (assert) ->
 
   startTime = new Date()
   $.ajax
-    type: "GET"
+    method: "GET"
     url: "/faux-fast"
     complete: (xhr, textStatus) ->
       actualDelay = ((new Date()) - startTime)
@@ -78,13 +78,13 @@ test "Fauxjax response time is correctly simulated fast", (assert) ->
 test "Forcing timeout", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    type: "GET"
+    method: "GET"
     url: "/fauxjax-request"
     responseText: "done"
     isTimeout: true
 
   $.ajax
-    type: "GET"
+    method: "GET"
     url: "/fauxjax-request"
     success: (data, textStatus, xhr) ->
       assert.ok(false, "isTimeout was set to true so reuqest should not have successfully returned")
