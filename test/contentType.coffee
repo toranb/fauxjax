@@ -9,7 +9,7 @@ module "Test Fake Vs Real contentType",
 test "When faux and real requests have the same contentType fauxjax will mock the xhr", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    type: "POST"
+    method: "POST"
     url: "/faux-request"
     dataType: "json"
     data: {name: "Johnny Utah"}
@@ -17,7 +17,7 @@ test "When faux and real requests have the same contentType fauxjax will mock th
     responseText: {foo: "bar"}
 
   $.ajax
-    type: "POST"
+    method: "POST"
     url: "/faux-request"
     data: {name: "Johnny Utah"}
     contentType: "application/json"
@@ -29,11 +29,38 @@ test "When faux and real requests have the same contentType fauxjax will mock th
     complete: (xhr, textStatus) ->
       done()
 
+test "When faux and real requests have the same contentType fauxjax will mock a failed xhr", (assert) ->
+  done = assert.async()
+  $.fauxjax.new
+    method: "POST"
+    status: 400
+    url: "/faux-request"
+    dataType: "json"
+    data: {email: "invalid@email.com"}
+    contentType: "application/json"
+    responseText: {email: ["Bad value"]}
+
+  $.ajax
+    method: "POST"
+    url: "/faux-request"
+    data: {email: "invalid@email.com"}
+    contentType: "application/json"
+    success: (data, textStatus, xhr) ->
+      assert.ok(false, "Faux request response was 400. Request should not have succeed")
+    error: (xhr, textStatus) ->
+      assert.ok(_.isEqual(xhr.responseJSON, {"email": ["Bad value"]}))
+    complete: (xhr, textStatus) ->
+      done()
+
+  # As of Qunit 1.16.0 we cannot return a failing ajax request.
+  # https://github.com/jquery/qunit/releases/tag/1.16.0
+  return true
+
 test "When faux and real requests have different contentType fauxjax will not mock the xhr", (assert) ->
   done = assert.async()
 
   $.fauxjax.new
-    type: "POST"
+    method: "POST"
     url: "/faux-request"
     dataType: "json"
     data: {name: "Johnny Utah"}
@@ -41,7 +68,7 @@ test "When faux and real requests have different contentType fauxjax will not mo
     responseText: {foo: "bar"}
 
   $.ajax
-    type: "POST"
+    method: "POST"
     url: "/faux-request"
     data: {name: "Johnny Utah"}
     contentType: "text/plain"

@@ -9,14 +9,14 @@ module "Test Fake Vs Real request method",
 test "When faux and real requests have different request types (legacy jQuery api) fauxjax does not fake request POST vs PATCH", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    type: "POST"
+    method: "POST"
     url: "/faux-request"
     dataType: "json"
     data: {empty: "data"}
     responseText: {foo: "bar"}
 
   $.ajax
-    type: "PATCH"
+    method: "PATCH"
     url: "/faux-request"
     data: {foo: "bar"}
     success: (data, textStatus, xhr) ->
