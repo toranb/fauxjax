@@ -29,9 +29,9 @@
         statusText:    "OK",
         responseTime:  0,
         isTimeout:     false,
-        contentType:   'text/plain',
+        contentType:   'application/x-www-form-urlencoded; charset=UTF-8',
         responseText:  '',
-        headers:       {'content-type' : 'text/plain'}
+        headers:       {'content-type' : 'application/x-www-form-urlencoded; charset=UTF-8'}
     };
 
     /**
@@ -104,6 +104,9 @@
             return false;
         }
         if (mockHandler.contentType && realRequestContext.contentType && !_.isEqual(mockHandler.contentType, realRequestContext.contentType)) {
+            return false;
+        }
+        if (!mockHandler.contentType && $.fauxjax.settings.contentType && !_.isEqual($.fauxjax.settings.contentType, realRequestContext.contentType)) {
             return false;
         }
         if (mockHandler.method && mockHandler.method.toLowerCase() != realRequestContext.method.toLowerCase()) {

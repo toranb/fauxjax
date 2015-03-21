@@ -52,7 +52,7 @@ test "Fauxjax request correctly returns json", (assert) ->
       assert.equal(xhr.getResponseHeader("Content-Type"), "application/json", "Incorrect context type was returned from faked call")
       done()
 
-test "Fauxjax request correctly returns text by default", (assert) ->
+test "Fauxjax request correctly returns x-www-form-urlencoded by default", (assert) ->
   done = assert.async()
   $.fauxjax.new
     url: "/faux-request"
@@ -65,7 +65,7 @@ test "Fauxjax request correctly returns text by default", (assert) ->
       assert.ok(true, "Faux request should have have successful")
       assert.ok(_.isEqual(data, "just text"))
     complete: (xhr, textStatus) ->
-      assert.equal xhr.getResponseHeader("Content-Type"), "text/plain", "Content type of text/plain"
+      assert.equal(xhr.getResponseHeader("Content-Type"), "application/x-www-form-urlencoded; charset=UTF-8", "ContentType did not match")
       done()
 
 test "Fauxjax can set additional response headers", (assert) ->

@@ -11,9 +11,9 @@ test "Fauxjax default settings", (assert) ->
   assert.equal($.fauxjax.settings.statusText, "OK")
   assert.equal($.fauxjax.settings.responseTime, 0)
   assert.equal($.fauxjax.settings.isTimeout, false)
-  assert.equal($.fauxjax.settings.contentType, 'text/plain')
+  assert.equal($.fauxjax.settings.contentType, 'application/x-www-form-urlencoded; charset=UTF-8')
   assert.equal($.fauxjax.settings.responseText, '')
-  assert.equal($.fauxjax.settings.headers['content-type'], 'text/plain')
+  assert.equal($.fauxjax.settings.headers['content-type'], 'application/x-www-form-urlencoded; charset=UTF-8')
 
 test "Success callback should have access to xhr object", (assert) ->
   done = assert.async()
