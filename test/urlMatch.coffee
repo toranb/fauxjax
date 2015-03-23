@@ -9,10 +9,12 @@ module "Test Fake Vs Real Request URL",
 test "When faux and real requests have different urls fauxjax does not fake request", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    method: "POST"
-    url: "/faux-request/something"
-    data: {empty: "data"}
-    responseContent: {foo: "bar"}
+    request:
+      method: "POST"
+      url: "/faux-request/something"
+      data: {empty: "data"}
+    response:
+      responseContent: {foo: "bar"}
 
   $.ajax
     method: "POST"
@@ -29,13 +31,14 @@ test "When faux and real requests have different urls fauxjax does not fake requ
   # https://github.com/jquery/qunit/releases/tag/1.16.0
   return true
 
-
 test "When faux and real requests have the same urls fauxjax does fake request", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    method: "GET"
-    url: "/faux-request"
-    responseContent: {foo: "bar"}
+    request:
+      method: "GET"
+      url: "/faux-request"
+    response:
+      responseContent: {foo: "bar"}
 
   $.ajax
     method: "GET"

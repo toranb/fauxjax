@@ -95,17 +95,19 @@
         if (!mockHandler) {
             /** Handler was removed by id **/
             return false;
+        } else {
+            var mockRequest = mockHandler.request
         }
-        if (mockHandler.data && !realRequestContext.data || _.some(_.compact([mockHandler.data, realRequestContext.data])) && !_.isEqual(mockHandler.data, realRequestContext.data)) {
+        if (mockRequest.data && !realRequestContext.data || _.some(_.compact([mockRequest.data, realRequestContext.data])) && !_.isEqual(mockRequest.data, realRequestContext.data)) {
             return false;
         }
-        if (!_.isEqual(mockHandler.url, realRequestContext.url)) {
+        if (!_.isEqual(mockRequest.url, realRequestContext.url)) {
             return false;
         }
-        if (mockHandler.method && mockHandler.method.toLowerCase() != realRequestContext.method.toLowerCase()) {
+        if (mockRequest.method && mockRequest.method.toLowerCase() != realRequestContext.method.toLowerCase()) {
             return false;
         }
-        if (!_.isEqual(mockHandler.headers, realRequestContext.headers)) {
+        if (!_.isEqual(mockRequest.headers, realRequestContext.headers)) {
             return false;
         }
         return true;
@@ -170,7 +172,7 @@
      */
     function fauxXhr(mockHandler, realRequestContext) {
         deepCloneSettings = _.clone($.fauxjax.settings, true);
-        mockRequestContext = _.assign({}, deepCloneSettings, mockHandler);
+        mockRequestContext = _.assign({}, deepCloneSettings, mockHandler.response);
         mockRequestContext.headers['content-type'] = getResponseContentType(mockRequestContext.responseContent);
         realRequestContext.headers = {};
         return {

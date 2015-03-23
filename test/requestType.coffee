@@ -9,10 +9,12 @@ module "Test Fake Vs Real request method",
 test "When faux and real requests have different request types (legacy jQuery api) fauxjax does not fake request POST vs PATCH", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    method: "POST"
-    url: "/faux-request"
-    data: {empty: "data"}
-    responseContent: {foo: "bar"}
+    request:
+      method: "POST"
+      url: "/faux-request"
+      data: {empty: "data"}
+    response:
+      responseContent: {foo: "bar"}
 
   $.ajax
     method: "PATCH"
@@ -32,10 +34,12 @@ test "When faux and real requests have different request types (legacy jQuery ap
 test "When faux and real requests have different request methods fauxjax does not fake request POST vs GET", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    method: "POST"
-    url: "/faux-request"
-    data: {empty: "data"}
-    responseContent: {foo: "bar"}
+    request:
+      method: "POST"
+      url: "/faux-request"
+      data: {empty: "data"}
+    response:
+      responseContent: {foo: "bar"}
 
   $.ajax
     method: "GET"
@@ -54,10 +58,12 @@ test "When faux and real requests have different request methods fauxjax does no
 test "When faux and real requests have different request methods fauxjax does not fake request POST vs PUT", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    method: "POST"
-    url: "/faux-request"
-    data: {empty: "data"}
-    responseContent: {foo: "bar"}
+    request:
+      method: "POST"
+      url: "/faux-request"
+      data: {empty: "data"}
+    response:
+      responseContent: {foo: "bar"}
 
   $.ajax
     method: "PUT"
@@ -77,10 +83,12 @@ test "When faux and real requests have different request methods fauxjax does no
 test "When faux and real requests have different request methods fauxjax does not fake request POST vs PUT", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    method: "POST"
-    url: "/faux-request"
-    data: {empty: "data"}
-    responseContent: {foo: "bar"}
+    request:
+      method: "POST"
+      url: "/faux-request"
+      data: {empty: "data"}
+    response:
+      responseContent: {foo: "bar"}
 
   $.ajax
     method: "PUT"
@@ -100,9 +108,11 @@ test "When faux and real requests have different request methods fauxjax does no
 test "When faux and real requests have the same request methods fauxjax does fake request GET vs GET", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    method: "GET"
-    url: "/faux-request"
-    responseContent: {foo: "bar"}
+    request:
+      method: "GET"
+      url: "/faux-request"
+    response:
+      responseContent: {foo: "bar"}
 
   $.ajax
     method: "GET"
@@ -118,9 +128,11 @@ test "When faux and real requests have the same request methods fauxjax does fak
 test "Case-insensitive matching for request methods", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    url: "/faux-request"
-    method: "GET"
-    responseContent: "Uppercase"
+    request:
+      url: "/faux-request"
+      method: "GET"
+    response:
+      responseContent: "Uppercase"
 
   $.ajax
     url: "/faux-request"
@@ -135,13 +147,15 @@ test "Multiple handlers can exist for the same url with different verbs", (asser
   done1 = assert.async()
   done2 = assert.async()
   $.fauxjax.new
-    method: "GET"
-    url: "/faux-request"
+    request:
+      method: "GET"
+      url: "/faux-request"
 
   $.fauxjax.new
-    method: "POST"
-    url: "/faux-request"
-    data: {empty: "data"}
+    request:
+      method: "POST"
+      url: "/faux-request"
+      data: {empty: "data"}
 
   $.ajax
     method: "GET"

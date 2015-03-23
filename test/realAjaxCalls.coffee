@@ -46,8 +46,9 @@ test "unhandled array is cleared when fauxjax.clear is called", (assert) ->
 test "unhandled array returns nothing when no actual ajax calls occur", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    method: "GET"
-    url: "/faux-request"
+    request:
+      method: "GET"
+      url: "/faux-request"
 
   $.ajax
     method: "GET"

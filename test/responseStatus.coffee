@@ -9,9 +9,11 @@ module "Test Faux Response Status Codes",
 test "Fauxjax with status of 500 returns an error and status is 500", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    url: "/faux-request"
-    status:  500
-    responseContent: "Internal Server Error"
+    request:
+      url: "/faux-request"
+    response:
+      status: 500
+      responseContent: "Internal Server Error"
 
   $.ajax
     url: "/faux-request"
@@ -29,9 +31,11 @@ test "Fauxjax with status of 500 returns an error and status is 500", (assert) -
 test "Fauxjax with status of 404 returns an error and status is 404", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    url: "/faux-request"
-    status:  404
-    responseContent: "Not Found"
+    request:
+      url: "/faux-request"
+    response:
+      status:  404
+      responseContent: "Not Found"
 
   $.ajax
     url: "/faux-request"
@@ -49,9 +53,11 @@ test "Fauxjax with status of 404 returns an error and status is 404", (assert) -
 test "Fauxjax with status of 200 returns a success and status is 200", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    url: "/faux-request"
-    status:  200
-    responseContent: "That went well"
+    request:
+      url: "/faux-request"
+    response:
+      status:  200
+      responseContent: "That went well"
 
   $.ajax
     url: "/faux-request"
@@ -65,11 +71,13 @@ test "Fauxjax with status of 200 returns a success and status is 200", (assert) 
 test "Fauxjax can return JSON data with an error", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    method: 'POST'
-    url: '/faux-request'
-    data: {'username': ''}
-    status: 400
-    responseContent: {'username': ['This field is required']}
+    request:
+      method: 'POST'
+      url: '/faux-request'
+      data: {'username': ''}
+    response:
+      status: 400
+      responseContent: {'username': ['This field is required']}
 
   $.ajax
     method: 'POST'

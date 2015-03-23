@@ -9,9 +9,11 @@ module "Test Fake Vs Real Request Data",
 test "When faux and real requests have different data fauxjax does not fake the request", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    method: "POST"
-    url: "/faux-request"
-    data: {foo: "bar"}
+    request:
+      method: "POST"
+      url: "/faux-request"
+    response:
+      data: {foo: "bar"}
 
   $.ajax
     method: "POST"
@@ -31,10 +33,12 @@ test "When faux and real requests have different data fauxjax does not fake the 
 test "When faux and real request have the same data the request is successfully faked", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    method: "POST"
-    url: "/faux-request"
-    data: {values: [1, 2, 3]}
-    responseContent: {fakeResponse: "Post success"}
+    request:
+      method: "POST"
+      url: "/faux-request"
+      data: {values: [1, 2, 3]}
+    response:
+      responseContent: {fakeResponse: "Post success"}
 
   $.ajax
     method: "POST"
@@ -51,10 +55,12 @@ test "When faux and real request have the same data the request is successfully 
 test "Correctly matches request data when empty objects", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    method: "POST"
-    url: "/faux-request"
-    data: {}
-    responseContent: {}
+    request:
+      method: "POST"
+      url: "/faux-request"
+      data: {}
+    response:
+      responseContent: {}
 
   $.ajax
     method: "POST"
@@ -70,10 +76,12 @@ test "Correctly matches request data when empty objects", (assert) ->
 test "Data can be Undefined and Null and will still be succeffully mocked", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    method: "GET"
-    url: "/faux-request"
-    data: null
-    responseContent: {}
+    request:
+      method: "GET"
+      url: "/faux-request"
+      data: null
+    response:
+      responseContent: {}
 
   $.ajax
     method: "GET"

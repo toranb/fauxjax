@@ -9,10 +9,12 @@ module "Header Tests",
 test "Fauxjax request correctly returns text when string is provided for responseContent", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    method: "POST"
-    url: "/faux-request"
-    data: {some: "post"}
-    responseContent: "<div>WINNING</div>"
+    request:
+      method: "POST"
+      url: "/faux-request"
+      data: {some: "post"}
+    response:
+      responseContent: "<div>WINNING</div>"
 
   $.ajax
     method: "POST"
@@ -29,10 +31,12 @@ test "Fauxjax request correctly returns text when string is provided for respons
 test "Fauxjax request correctly returns json when object is provided for responseContent", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    method: "POST"
-    url: "/faux-request"
-    data: {filler: "text"}
-    responseContent: {foo: "bar", baz: {car: "far"}}
+    request:
+      method: "POST"
+      url: "/faux-request"
+      data: {filler: "text"}
+    response:
+      responseContent: {foo: "bar", baz: {car: "far"}}
 
   $.ajax
     method: "POST"
@@ -49,15 +53,16 @@ test "Fauxjax request correctly returns json when object is provided for respons
 test "Fauxjax can set additional response headers", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    method: "GET"
-    url: "/fauxjax-request"
-    headers: {"Something-Useful": "yes"}
-    responseContent: "done"
+    request:
+      method: "GET"
+      url: "/fauxjax-request"
+    response:
+      headers: {"Something-Useful": "yes"}
+      responseContent: "done"
 
   $.ajax
     method: "GET"
     url: "/fauxjax-request"
-    headers: {"Something-Useful": "yes"}
     error: (xhr, textStatus) ->
       assert.ok(false, "Request should have been successfully faked")
     success: (data, textStatus, xhr) ->
@@ -66,12 +71,14 @@ test "Fauxjax can set additional response headers", (assert) ->
       assert.equal(xhr.getResponseHeader("Something-Useful"), "yes", "Additional header is not present")
       done()
 
-test "Fauxjax will not mock request if headers do not match", (assert) ->
+test "Fauxjax will not mock request if request headers do not match", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    method: "GET"
-    url: "/fauxjax-request"
-    responseContent: {status: "success"}
+    request:
+      method: "GET"
+      url: "/fauxjax-request"
+    response:
+      responseContent: {status: "success"}
 
   $.ajax
     method: "GET"
@@ -88,13 +95,15 @@ test "Fauxjax will not mock request if headers do not match", (assert) ->
   # https://github.com/jquery/qunit/releases/tag/1.16.0
   return true
 
-test "Fauxjax will mock request when headers do match", (assert) ->
+test "Fauxjax will mock request when request headers do match", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    method: "GET"
-    url: "/fauxjax-request"
-    headers: {"Authorization": "Basic " + btoa("JarrodCTaylor:password1")}
-    responseContent: {status: "success"}
+    request:
+      method: "GET"
+      url: "/fauxjax-request"
+      headers: {"Authorization": "Basic " + btoa("JarrodCTaylor:password1")}
+    response:
+      responseContent: {status: "success"}
 
   $.ajax
     method: "GET"

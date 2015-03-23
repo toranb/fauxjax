@@ -3,8 +3,10 @@ module "Connection Simulation Tests",
     @defaultSettings = _.clone($.fauxjax.settings)
 
     $.fauxjax.new
-      url: "/faux-regular"
-      responseTime: 50
+      request:
+        url: "/faux-regular"
+      response:
+        responseTime: 50
 
   afterEach: ->
     $.fauxjax.clear()
@@ -48,8 +50,10 @@ test "Fauxjax response time is correctly simulated", (assert) ->
   done = assert.async()
 
   $.fauxjax.new
-    url: "/faux-slower"
-    responseTime: 150
+    request:
+      url: "/faux-slower"
+    response:
+      responseTime: 150
 
   startTime = new Date()
   $.ajax
@@ -63,8 +67,10 @@ test "Fauxjax response time is correctly simulated", (assert) ->
 test "Fauxjax response time is correctly simulated fast", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    url: "/faux-fast"
-    responseTime: 0
+    request:
+      url: "/faux-fast"
+    response:
+      responseTime: 0
 
   startTime = new Date()
   $.ajax
@@ -78,10 +84,12 @@ test "Fauxjax response time is correctly simulated fast", (assert) ->
 test "Forcing timeout", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    method: "GET"
-    url: "/fauxjax-request"
-    responseContent: "done"
-    isTimeout: true
+    request:
+      method: "GET"
+      url: "/fauxjax-request"
+    response:
+      isTimeout: true
+      responseContent: "done"
 
   $.ajax
     method: "GET"

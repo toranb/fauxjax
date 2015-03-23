@@ -9,9 +9,11 @@ module "Test Query Parameters In Url",
 test "Fauxjax correctly fakes a url that uses query params", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    method: "GET"
-    url: "/faux-request/?params=im-a-query"
-    responseContent: {foo: "bar"}
+    request:
+      method: "GET"
+      url: "/faux-request/?params=im-a-query"
+    response:
+      responseContent: {foo: "bar"}
 
   $.ajax
     method: "GET"

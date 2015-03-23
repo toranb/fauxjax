@@ -9,9 +9,11 @@ module "Promises Tests",
 test "Faked calls have access to the done promise callback", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    method: "GET"
-    url: "http://faux-request"
-    responseContent: "Told you I would come through"
+    request:
+      method: "GET"
+      url: "http://faux-request"
+    response:
+      responseContent: "Told you I would come through"
 
   $.ajax(
     method: "GET"
@@ -23,9 +25,11 @@ test "Faked calls have access to the done promise callback", (assert) ->
 test "Faked calls have access to the then promise callback", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    method: "GET"
-    url: "http://faux-request"
-    responseContent: "Then do what you like"
+    request:
+      method: "GET"
+      url: "http://faux-request"
+    response:
+      responseContent: "Then do what you like"
 
   $.ajax(
     method: "GET"
@@ -37,11 +41,13 @@ test "Faked calls have access to the then promise callback", (assert) ->
 test "Faked calls have access to the fail promise callback", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    method: "GET"
-    url: "http://faux-request"
-    status: 404
-    statusText: "Request failed"
-    isTimeout: true
+    request:
+      method: "GET"
+      url: "http://faux-request"
+    response:
+      status: 404
+      statusText: "Request failed"
+      isTimeout: true
 
   $.ajax(
     method: "GET"
@@ -57,10 +63,12 @@ test "Faked calls have access to the fail promise callback", (assert) ->
 test "Faked calls have access to the always promise callback", (assert) ->
   done = assert.async()
   $.fauxjax.new
-    method: "GET"
-    url: "http://faux-request"
-    isTimeout: true
-    responseContent: "Old faithful"
+    request:
+      method: "GET"
+      url: "http://faux-request"
+    response:
+      isTimeout: true
+      responseContent: "Old faithful"
 
   $.ajax(
     method: "GET"
