@@ -14,7 +14,7 @@ test "When faux and real requests have different urls fauxjax does not fake requ
       url: "/faux-request/something"
       data: {empty: "data"}
     response:
-      responseContent: {foo: "bar"}
+      content: {foo: "bar"}
 
   $.ajax
     method: "POST"
@@ -38,7 +38,7 @@ test "When faux and real requests have the same urls fauxjax does fake request",
       method: "GET"
       url: "/faux-request"
     response:
-      responseContent: {foo: "bar"}
+      content: {foo: "bar"}
 
   $.ajax
     method: "GET"

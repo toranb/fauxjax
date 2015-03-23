@@ -29,7 +29,7 @@
         statusText:    "OK",
         responseTime:  0,
         isTimeout:     false,
-        responseContent:  '',
+        content:  '',
         headers:       {}
     };
 
@@ -114,22 +114,22 @@
     }
 
     /**
-     * Properly format the faux request's responseContent to be sent in the faux xhr
-     * @param {Object|String} responseContent The value of `responseContent` in the mock request
-     * @returns {String} Returns a string version of the `responseContent`
+     * Properly format the faux request's content to be sent in the faux xhr
+     * @param {Object|String} content The value of `content` in the mock request
+     * @returns {String} Returns a string version of the `content`
      */
-    function formatResponseText(responseContent) {
-        if (_.isObject(responseContent)) {
-            return JSON.stringify(responseContent);
+    function formatResponseText(content) {
+        if (_.isObject(content)) {
+            return JSON.stringify(content);
         }
-        return responseContent;
+        return content;
     }
 
     /**
-     * Determine the respinse content-type based on the value of responseContent
+     * Determine the respinse content-type based on the value of content
      */
-    function getResponseContentType(responseContent) {
-        if (_.isObject(responseContent)) {
+    function getResponseContentType(content) {
+        if (_.isObject(content)) {
             return "json";
         }
         return "text";
@@ -145,7 +145,7 @@
         var process = _.bind(function() {
                                   this.status = mockRequestContext.isTimeout ? -1 : mockRequestContext.status;
                                   this.statusText = mockRequestContext.statusText;
-                                  this.responseText = formatResponseText(mockRequestContext.responseContent);
+                                  this.responseText = formatResponseText(mockRequestContext.content);
                                   this.onload.call(this);
                              }, this);
         realRequestContext.async ? setTimeout(process, mockRequestContext.responseTime) : process();
@@ -173,7 +173,7 @@
     function fauxXhr(mockHandler, realRequestContext) {
         deepCloneSettings = _.clone($.fauxjax.settings, true);
         mockRequestContext = _.assign({}, deepCloneSettings, mockHandler.response);
-        mockRequestContext.headers['content-type'] = getResponseContentType(mockRequestContext.responseContent);
+        mockRequestContext.headers['content-type'] = getResponseContentType(mockRequestContext.content);
         realRequestContext.headers = {};
         return {
             status: mockRequestContext.status,

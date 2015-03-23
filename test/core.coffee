@@ -11,7 +11,7 @@ test "Fauxjax default settings", (assert) ->
   assert.equal($.fauxjax.settings.statusText, "OK")
   assert.equal($.fauxjax.settings.responseTime, 0)
   assert.equal($.fauxjax.settings.isTimeout, false)
-  assert.equal($.fauxjax.settings.responseContent, '')
+  assert.equal($.fauxjax.settings.content, '')
   assert.ok(_.isEqual($.fauxjax.settings.headers, {}))
 
 test "Success callback should have access to xhr object", (assert) ->

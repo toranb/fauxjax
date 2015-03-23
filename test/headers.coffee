@@ -6,7 +6,7 @@ module "Header Tests",
     $.fauxjax.clear()
     $.fauxjax.settings = @defaultSettings
 
-test "Fauxjax request correctly returns text when string is provided for responseContent", (assert) ->
+test "Fauxjax request correctly returns text when string is provided for content", (assert) ->
   done = assert.async()
   $.fauxjax.new
     request:
@@ -14,7 +14,7 @@ test "Fauxjax request correctly returns text when string is provided for respons
       url: "/faux-request"
       data: {some: "post"}
     response:
-      responseContent: "<div>WINNING</div>"
+      content: "<div>WINNING</div>"
 
   $.ajax
     method: "POST"
@@ -28,7 +28,7 @@ test "Fauxjax request correctly returns text when string is provided for respons
       assert.equal(xhr.getResponseHeader("Content-Type"), "text", "Incorrect content type was returned from faked call")
       done()
 
-test "Fauxjax request correctly returns json when object is provided for responseContent", (assert) ->
+test "Fauxjax request correctly returns json when object is provided for content", (assert) ->
   done = assert.async()
   $.fauxjax.new
     request:
@@ -36,7 +36,7 @@ test "Fauxjax request correctly returns json when object is provided for respons
       url: "/faux-request"
       data: {filler: "text"}
     response:
-      responseContent: {foo: "bar", baz: {car: "far"}}
+      content: {foo: "bar", baz: {car: "far"}}
 
   $.ajax
     method: "POST"
@@ -58,7 +58,7 @@ test "Fauxjax can set additional response headers", (assert) ->
       url: "/fauxjax-request"
     response:
       headers: {"Something-Useful": "yes"}
-      responseContent: "done"
+      content: "done"
 
   $.ajax
     method: "GET"
@@ -78,7 +78,7 @@ test "Fauxjax will not mock request if request headers do not match", (assert) -
       method: "GET"
       url: "/fauxjax-request"
     response:
-      responseContent: {status: "success"}
+      content: {status: "success"}
 
   $.ajax
     method: "GET"
@@ -103,7 +103,7 @@ test "Fauxjax will mock request when request headers do match", (assert) ->
       url: "/fauxjax-request"
       headers: {"Authorization": "Basic " + btoa("JarrodCTaylor:password1")}
     response:
-      responseContent: {status: "success"}
+      content: {status: "success"}
 
   $.ajax
     method: "GET"

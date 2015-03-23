@@ -38,7 +38,7 @@ test "When faux and real request have the same data the request is successfully 
       url: "/faux-request"
       data: {values: [1, 2, 3]}
     response:
-      responseContent: {fakeResponse: "Post success"}
+      content: {fakeResponse: "Post success"}
 
   $.ajax
     method: "POST"
@@ -60,7 +60,7 @@ test "Correctly matches request data when empty objects", (assert) ->
       url: "/faux-request"
       data: {}
     response:
-      responseContent: {}
+      content: {}
 
   $.ajax
     method: "POST"
@@ -81,7 +81,7 @@ test "Data can be Undefined and Null and will still be succeffully mocked", (ass
       url: "/faux-request"
       data: null
     response:
-      responseContent: {}
+      content: {}
 
   $.ajax
     method: "GET"

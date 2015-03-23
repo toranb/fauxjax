@@ -13,7 +13,7 @@ test "Fauxjax with status of 500 returns an error and status is 500", (assert) -
       url: "/faux-request"
     response:
       status: 500
-      responseContent: "Internal Server Error"
+      content: "Internal Server Error"
 
   $.ajax
     url: "/faux-request"
@@ -35,7 +35,7 @@ test "Fauxjax with status of 404 returns an error and status is 404", (assert) -
       url: "/faux-request"
     response:
       status:  404
-      responseContent: "Not Found"
+      content: "Not Found"
 
   $.ajax
     url: "/faux-request"
@@ -57,7 +57,7 @@ test "Fauxjax with status of 200 returns a success and status is 200", (assert) 
       url: "/faux-request"
     response:
       status:  200
-      responseContent: "That went well"
+      content: "That went well"
 
   $.ajax
     url: "/faux-request"
@@ -77,7 +77,7 @@ test "Fauxjax can return JSON data with an error", (assert) ->
       data: {'username': ''}
     response:
       status: 400
-      responseContent: {'username': ['This field is required']}
+      content: {'username': ['This field is required']}
 
   $.ajax
     method: 'POST'

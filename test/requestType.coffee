@@ -14,7 +14,7 @@ test "When faux and real requests have different request types (legacy jQuery ap
       url: "/faux-request"
       data: {empty: "data"}
     response:
-      responseContent: {foo: "bar"}
+      content: {foo: "bar"}
 
   $.ajax
     method: "PATCH"
@@ -39,7 +39,7 @@ test "When faux and real requests have different request methods fauxjax does no
       url: "/faux-request"
       data: {empty: "data"}
     response:
-      responseContent: {foo: "bar"}
+      content: {foo: "bar"}
 
   $.ajax
     method: "GET"
@@ -63,7 +63,7 @@ test "When faux and real requests have different request methods fauxjax does no
       url: "/faux-request"
       data: {empty: "data"}
     response:
-      responseContent: {foo: "bar"}
+      content: {foo: "bar"}
 
   $.ajax
     method: "PUT"
@@ -88,7 +88,7 @@ test "When faux and real requests have different request methods fauxjax does no
       url: "/faux-request"
       data: {empty: "data"}
     response:
-      responseContent: {foo: "bar"}
+      content: {foo: "bar"}
 
   $.ajax
     method: "PUT"
@@ -112,7 +112,7 @@ test "When faux and real requests have the same request methods fauxjax does fak
       method: "GET"
       url: "/faux-request"
     response:
-      responseContent: {foo: "bar"}
+      content: {foo: "bar"}
 
   $.ajax
     method: "GET"
@@ -132,7 +132,7 @@ test "Case-insensitive matching for request methods", (assert) ->
       url: "/faux-request"
       method: "GET"
     response:
-      responseContent: "Uppercase"
+      content: "Uppercase"
 
   $.ajax
     url: "/faux-request"

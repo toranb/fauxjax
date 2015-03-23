@@ -89,7 +89,7 @@ test "Forcing timeout", (assert) ->
       url: "/fauxjax-request"
     response:
       isTimeout: true
-      responseContent: "done"
+      content: "done"
 
   $.ajax
     method: "GET"
