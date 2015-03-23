@@ -13,7 +13,7 @@ test "Remove fauxjax definition by id", (assert) ->
   id = $.fauxjax.new
     method: "GET"
     url: "faux-request"
-    responseText: "test"
+    responseContent: "test"
 
   $.ajax
     method: "GET"
@@ -30,7 +30,7 @@ test "Remove fauxjax definition by id", (assert) ->
   $.fauxjax.new
     method: "GET"
     url: "faux-request"
-    responseText: "default"
+    responseContent: "default"
 
   $.ajax
     method: "GET"
@@ -46,15 +46,13 @@ test "Remove fauxjax definition by id when mutiple exist", (assert) ->
   id = $.fauxjax.new(
     method: "GET"
     url: "/faux-request/two"
-    contentType: "text/plain"
-    responseText: "test"
+    responseContent: "test"
   )
 
   $.fauxjax.new(
     method: "GET"
     url: "/faux-request"
-    contentType: "text/plain"
-    responseText: "test"
+    responseContent: "test"
   )
 
   assert.equal(2, $.fauxjax.unfired().length)

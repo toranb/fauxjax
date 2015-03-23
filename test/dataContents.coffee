@@ -28,13 +28,13 @@ test "When faux and real requests have different data fauxjax does not fake the 
   # https://github.com/jquery/qunit/releases/tag/1.16.0
   return true
 
-test "When faux and real request have the save data request is successfully faked", (assert) ->
+test "When faux and real request have the same data the request is successfully faked", (assert) ->
   done = assert.async()
   $.fauxjax.new
     method: "POST"
     url: "/faux-request"
     data: {values: [1, 2, 3]}
-    responseText: {fakeResponse: "Post success"}
+    responseContent: {fakeResponse: "Post success"}
 
   $.ajax
     method: "POST"
@@ -42,7 +42,7 @@ test "When faux and real request have the save data request is successfully fake
     data: {values: [1, 2, 3]}
     success: (data, textStatus, xhr) ->
       assert.ok(true, "Request did not succeed and should have been successfully faked")
-      assert.ok(_.isEqual(data, '{"fakeResponse":"Post success"}'), "Response text not a match received: #{data}")
+      assert.ok(_.isEqual(data, {"fakeResponse": "Post success"}), "Response text not a match received: #{data}")
     error: (xhr, textStatus) ->
       assert.ok(false, "Faux data does match the real request data. The request should not have returned an error")
     complete: (xhr, textStatus) ->
@@ -54,7 +54,7 @@ test "Correctly matches request data when empty objects", (assert) ->
     method: "POST"
     url: "/faux-request"
     data: {}
-    responseText: {}
+    responseContent: {}
 
   $.ajax
     method: "POST"
@@ -73,7 +73,7 @@ test "Data can be Undefined and Null and will still be succeffully mocked", (ass
     method: "GET"
     url: "/faux-request"
     data: null
-    responseText: {}
+    responseContent: {}
 
   $.ajax
     method: "GET"

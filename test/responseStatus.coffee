@@ -11,7 +11,7 @@ test "Fauxjax with status of 500 returns an error and status is 500", (assert) -
   $.fauxjax.new
     url: "/faux-request"
     status:  500
-    responseText: "Internal Server Error"
+    responseContent: "Internal Server Error"
 
   $.ajax
     url: "/faux-request"
@@ -31,7 +31,7 @@ test "Fauxjax with status of 404 returns an error and status is 404", (assert) -
   $.fauxjax.new
     url: "/faux-request"
     status:  404
-    responseText: "Not Found"
+    responseContent: "Not Found"
 
   $.ajax
     url: "/faux-request"
@@ -51,7 +51,7 @@ test "Fauxjax with status of 200 returns a success and status is 200", (assert) 
   $.fauxjax.new
     url: "/faux-request"
     status:  200
-    responseText: "That went well"
+    responseContent: "That went well"
 
   $.ajax
     url: "/faux-request"
@@ -61,3 +61,26 @@ test "Fauxjax with status of 200 returns a success and status is 200", (assert) 
     complete: (xhr, textStatus) ->
       assert.equal(xhr.status, 200, "Fauxjax was created as a success of 200 but actually returned: #{xhr.status}")
       done()
+
+test "Fauxjax can return JSON data with an error", (assert) ->
+  done = assert.async()
+  $.fauxjax.new
+    method: 'POST'
+    url: '/faux-request'
+    data: {'username': ''}
+    status: 400
+    responseContent: {'username': ['This field is required']}
+
+  $.ajax
+    method: 'POST'
+    url: '/faux-request'
+    data: {'username': ''}
+    success: ->
+      assert.ok(false, "Returned a success response when it should have been an error")
+    error: (xhr) ->
+      assert.ok(_.isEqual(xhr.responseJSON, {'username': ['This field is required']}),
+        "Expected JSON data in response to contain field error, but got: #{xhr.responseJSON}")
+    complete: ->
+      done()
+
+  return true

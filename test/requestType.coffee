@@ -11,9 +11,8 @@ test "When faux and real requests have different request types (legacy jQuery ap
   $.fauxjax.new
     method: "POST"
     url: "/faux-request"
-    dataType: "json"
     data: {empty: "data"}
-    responseText: {foo: "bar"}
+    responseContent: {foo: "bar"}
 
   $.ajax
     method: "PATCH"
@@ -35,9 +34,8 @@ test "When faux and real requests have different request methods fauxjax does no
   $.fauxjax.new
     method: "POST"
     url: "/faux-request"
-    dataType: "json"
     data: {empty: "data"}
-    responseText: {foo: "bar"}
+    responseContent: {foo: "bar"}
 
   $.ajax
     method: "GET"
@@ -58,9 +56,8 @@ test "When faux and real requests have different request methods fauxjax does no
   $.fauxjax.new
     method: "POST"
     url: "/faux-request"
-    dataType: "json"
     data: {empty: "data"}
-    responseText: {foo: "bar"}
+    responseContent: {foo: "bar"}
 
   $.ajax
     method: "PUT"
@@ -82,9 +79,8 @@ test "When faux and real requests have different request methods fauxjax does no
   $.fauxjax.new
     method: "POST"
     url: "/faux-request"
-    dataType: "json"
     data: {empty: "data"}
-    responseText: {foo: "bar"}
+    responseContent: {foo: "bar"}
 
   $.ajax
     method: "PUT"
@@ -106,15 +102,14 @@ test "When faux and real requests have the same request methods fauxjax does fak
   $.fauxjax.new
     method: "GET"
     url: "/faux-request"
-    dataType: "json"
-    responseText: {foo: "bar"}
+    responseContent: {foo: "bar"}
 
   $.ajax
     method: "GET"
     url: "/faux-request"
     success: (data, textStatus, xhr) ->
       assert.ok(true, "Faux request method does match real request method. Request should have succeed")
-      assert.ok(_.isEqual(data, '{"foo":"bar"}'))
+      assert.ok(_.isEqual(data, {"foo": "bar"}))
     error: (xhr, textStatus) ->
       assert.ok(false, "Faux request does match real request data. Request should not have returned and error")
     complete: (xhr, textStatus) ->
@@ -125,7 +120,7 @@ test "Case-insensitive matching for request methods", (assert) ->
   $.fauxjax.new
     url: "/faux-request"
     method: "GET"
-    responseText: "Uppercase"
+    responseContent: "Uppercase"
 
   $.ajax
     url: "/faux-request"
@@ -146,7 +141,6 @@ test "Multiple handlers can exist for the same url with different verbs", (asser
   $.fauxjax.new
     method: "POST"
     url: "/faux-request"
-    dataType: "json"
     data: {empty: "data"}
 
   $.ajax

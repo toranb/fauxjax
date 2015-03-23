@@ -11,7 +11,7 @@ test "Faked calls have access to the done promise callback", (assert) ->
   $.fauxjax.new
     method: "GET"
     url: "http://faux-request"
-    responseText: "Told you I would come through"
+    responseContent: "Told you I would come through"
 
   $.ajax(
     method: "GET"
@@ -25,7 +25,7 @@ test "Faked calls have access to the then promise callback", (assert) ->
   $.fauxjax.new
     method: "GET"
     url: "http://faux-request"
-    responseText: "Then do what you like"
+    responseContent: "Then do what you like"
 
   $.ajax(
     method: "GET"
@@ -60,7 +60,7 @@ test "Faked calls have access to the always promise callback", (assert) ->
     method: "GET"
     url: "http://faux-request"
     isTimeout: true
-    responseText: "Old faithful"
+    responseContent: "Old faithful"
 
   $.ajax(
     method: "GET"

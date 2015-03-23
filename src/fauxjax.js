@@ -29,9 +29,8 @@
         statusText:    "OK",
         responseTime:  0,
         isTimeout:     false,
-        contentType:   'application/x-www-form-urlencoded; charset=UTF-8',
-        responseText:  '',
-        headers:       {'content-type' : 'application/x-www-form-urlencoded; charset=UTF-8'}
+        responseContent:  '',
+        headers:       {}
     };
 
     /**
@@ -103,12 +102,6 @@
         if (!_.isEqual(mockHandler.url, realRequestContext.url)) {
             return false;
         }
-        if (mockHandler.contentType && realRequestContext.contentType && !_.isEqual(mockHandler.contentType, realRequestContext.contentType)) {
-            return false;
-        }
-        if (!mockHandler.contentType && $.fauxjax.settings.contentType && !_.isEqual($.fauxjax.settings.contentType, realRequestContext.contentType)) {
-            return false;
-        }
         if (mockHandler.method && mockHandler.method.toLowerCase() != realRequestContext.method.toLowerCase()) {
             return false;
         }
@@ -119,15 +112,25 @@
     }
 
     /**
-     * Properly format the faux request's responseText to be sent in the faux xhr
-     * @param {Object|String} responseText The value of `responseText` in the mock request
-     * @returns {String} Returns a string version of the `responseText`
+     * Properly format the faux request's responseContent to be sent in the faux xhr
+     * @param {Object|String} responseContent The value of `responseContent` in the mock request
+     * @returns {String} Returns a string version of the `responseContent`
      */
-    function formatResponseText(responseText) {
-        if (_.isObject(responseText)) {
-            return JSON.stringify(responseText);
+    function formatResponseText(responseContent) {
+        if (_.isObject(responseContent)) {
+            return JSON.stringify(responseContent);
         }
-        return responseText;
+        return responseContent;
+    }
+
+    /**
+     * Determine the respinse content-type based on the value of responseContent
+     */
+    function getResponseContentType(responseContent) {
+        if (_.isObject(responseContent)) {
+            return "json";
+        }
+        return "text";
     }
 
     /**
@@ -140,7 +143,7 @@
         var process = _.bind(function() {
                                   this.status = mockRequestContext.isTimeout ? -1 : mockRequestContext.status;
                                   this.statusText = mockRequestContext.statusText;
-                                  this.responseText = formatResponseText(mockRequestContext.responseText);
+                                  this.responseText = formatResponseText(mockRequestContext.responseContent);
                                   this.onload.call(this);
                              }, this);
         realRequestContext.async ? setTimeout(process, mockRequestContext.responseTime) : process();
@@ -168,7 +171,7 @@
     function fauxXhr(mockHandler, realRequestContext) {
         deepCloneSettings = _.clone($.fauxjax.settings, true);
         mockRequestContext = _.assign({}, deepCloneSettings, mockHandler);
-        mockRequestContext.headers['content-type'] = mockRequestContext.contentType;
+        mockRequestContext.headers['content-type'] = getResponseContentType(mockRequestContext.responseContent);
         realRequestContext.headers = {};
         return {
             status: mockRequestContext.status,

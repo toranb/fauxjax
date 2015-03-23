@@ -11,8 +11,7 @@ test "Fauxjax correctly fakes a url that uses query params", (assert) ->
   $.fauxjax.new
     method: "GET"
     url: "/faux-request/?params=im-a-query"
-    dataType: "json"
-    responseText: {foo: "bar"}
+    responseContent: {foo: "bar"}
 
   $.ajax
     method: "GET"
