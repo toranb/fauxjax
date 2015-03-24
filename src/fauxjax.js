@@ -30,6 +30,7 @@
         responseTime:  0,
         isTimeout:     false,
         content:  '',
+        strictMatching: true,
         headers:       {}
     };
 
@@ -96,10 +97,7 @@
             /** Handler was removed by id **/
             return false;
         } else {
-            var mockRequest = mockHandler.request
-        }
-        if (mockRequest.data && !realRequestContext.data || _.some(_.compact([mockRequest.data, realRequestContext.data])) && !_.isEqual(mockRequest.data, realRequestContext.data)) {
-            return false;
+            var mockRequest = mockHandler.request;
         }
         if (!_.isEqual(mockRequest.url, realRequestContext.url)) {
             return false;
@@ -107,7 +105,10 @@
         if (mockRequest.method && mockRequest.method.toLowerCase() != realRequestContext.method.toLowerCase()) {
             return false;
         }
-        if (!_.isEqual(mockRequest.headers, realRequestContext.headers)) {
+        if (_.some(_.compact([mockRequest.data, realRequestContext.data])) && !_.isEqual(mockRequest.data, realRequestContext.data)) {
+            if ($.fauxjax.settings.strictMatching || mockRequest.data && !realRequestContext.data) { return false; }
+        }
+        if (!_.isEqual(mockRequest.headers, realRequestContext.headers) && $.fauxjax.settings.strictMatching) {
             return false;
         }
         return true;
