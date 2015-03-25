@@ -31,6 +31,7 @@
         isTimeout:     false,
         content:  '',
         strictMatching: true,
+        debug: false,
         headers:       {}
     };
 
@@ -87,6 +88,22 @@
     });
 
     /**
+     * Called when shouldMockRequest returns false. If debug is set to true then log
+     * debugging information
+     * @param {String} url A string representing the requested url
+     * @param {Sting} mismatchedProperty A string designating the property
+     *                                   that caused the request to not be matched
+     * @returns {undefined}
+     */
+    function debugInfo(url, mismatchedProperty) {
+      if ($.fauxjax.settings.debug) {
+        console.log("===== Fauxjax Debug Info =====");
+        console.log("URL: " + url);
+        console.log("[" + mismatchedProperty + "] property does not match actual request");
+      }
+    }
+
+    /**
      * Compares a mockHandler and a real Ajax request and determines if the real request should be mocked.
      * @param {Object} mockHandler A fauxjax settings object
      * @param {Object} realRequestContext The real context of the actual Ajax request
@@ -106,9 +123,13 @@
             return false;
         }
         if (_.some(_.compact([mockRequest.data, realRequestContext.data])) && !_.isEqual(mockRequest.data, realRequestContext.data)) {
-            if ($.fauxjax.settings.strictMatching || mockRequest.data && !realRequestContext.data) { return false; }
+            if ($.fauxjax.settings.strictMatching || mockRequest.data && !realRequestContext.data) {
+              debugInfo(mockRequest.url, "data");
+              return false;
+            }
         }
         if (!_.isEqual(mockRequest.headers, realRequestContext.headers) && $.fauxjax.settings.strictMatching) {
+            debugInfo(mockRequest.url, "headers");
             return false;
         }
         return true;
