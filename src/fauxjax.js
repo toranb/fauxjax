@@ -110,29 +110,30 @@
      * @returns {Boolean} Returns true if the real request should be mocked false otherwise
      */
     function shouldMockRequest(mockHandler, realRequestContext) {
-        if (!mockHandler) {
-            /** Handler was removed by id **/
-            return false;
+        if (mockHandler) {
+           var mockVerb = mockHandler.request.method || mockHandler.request.type;
+           var realVerb = realRequestContext.method || realRequestContext.type;
+           var mockRequest = mockHandler.request;
+           if (!_.isEqual(mockRequest.url, realRequestContext.url)) {
+               return false;
+           }
+           if (mockVerb && mockVerb.toLowerCase() != realVerb.toLowerCase()) {
+               return false;
+           }
+           if (_.some(_.compact([mockRequest.data, realRequestContext.data])) && !_.isEqual(mockRequest.data, realRequestContext.data)) {
+               if ($.fauxjax.settings.strictMatching || mockRequest.data && !realRequestContext.data) {
+                 debugInfo(mockRequest.url, "data");
+                 return false;
+               }
+           }
+           if (!_.isEqual(mockRequest.headers, realRequestContext.headers) && $.fauxjax.settings.strictMatching) {
+               debugInfo(mockRequest.url, "headers");
+               return false;
+           }
+           return true;
         } else {
-            var mockRequest = mockHandler.request;
+          return false;
         }
-        if (!_.isEqual(mockRequest.url, realRequestContext.url)) {
-            return false;
-        }
-        if (mockRequest.method && mockRequest.method.toLowerCase() != realRequestContext.method.toLowerCase()) {
-            return false;
-        }
-        if (_.some(_.compact([mockRequest.data, realRequestContext.data])) && !_.isEqual(mockRequest.data, realRequestContext.data)) {
-            if ($.fauxjax.settings.strictMatching || mockRequest.data && !realRequestContext.data) {
-              debugInfo(mockRequest.url, "data");
-              return false;
-            }
-        }
-        if (!_.isEqual(mockRequest.headers, realRequestContext.headers) && $.fauxjax.settings.strictMatching) {
-            debugInfo(mockRequest.url, "headers");
-            return false;
-        }
-        return true;
     }
 
     /**
