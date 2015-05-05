@@ -117,7 +117,7 @@
            if (!_.isEqual(mockRequest.url, realRequestContext.url)) {
                return false;
            }
-           if (mockVerb && mockVerb.toLowerCase() != realVerb.toLowerCase()) {
+           if (mockVerb && mockVerb.toLowerCase() !== realVerb.toLowerCase()) {
                return false;
            }
            if (_.some(_.compact([mockRequest.data, realRequestContext.data])) && !_.isEqual(mockRequest.data, realRequestContext.data)) {
