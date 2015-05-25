@@ -82,6 +82,15 @@
         return unhandled;
     };
 
+    /**
+     * Gets an array containing all ajax requests that have been faked.
+     * @param {None}
+     * @returns {Array} Returns an array of all faked ajax requests
+     */
+    $.fauxjax.fakedAjaxCalls = function() {
+        return fakedAjaxCalls;
+    };
+
     /* -------------------- Internal Plugin API ----------------------- */
     $.extend({
         ajax: interceptAjax
