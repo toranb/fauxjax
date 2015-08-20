@@ -113,6 +113,20 @@
     }
 
     /**
+     * Attempts to convert data to an object for comparison
+     * @param {String} A string representing the data for either a mock or real request
+     * @returns {Object|String}
+     */
+    function convertData(data) {
+      if (typeof data === "string") {
+        try {
+          return JSON.parse(data);
+        } catch(e) { }
+      }
+      return data;
+    }
+
+    /**
      * Compares a mockHandler and a real Ajax request and determines if the real request should be mocked.
      * @param {Object} mockHandler A fauxjax settings object
      * @param {Object} realRequestContext The real context of the actual Ajax request
@@ -123,33 +137,9 @@
            var mockVerb = mockHandler.request.method || mockHandler.request.type;
            var realVerb = realRequestContext.method || realRequestContext.type;
            var mockRequest = mockHandler.request;
-           var mockData = mockRequest.data;
-           var realData = realRequestContext.data;
-           if(typeof mockRequest.data === "object") {
-               mockData = mockRequest.data;
-           }
-           if(typeof mockRequest.data === "string") {
-               try {
-                   mockData = JSON.parse(mockRequest.data);
-               } catch(e) {
-                   console.log(e);
-                   console.log("mockRequest.data was not JSON.stringify'd: ");
-                   console.log(mockRequest.data);
-               }
-           }
 
-           if(typeof realRequestContext.data === "object") {
-               realData = realRequestContext.data;
-           }
-           if(typeof realRequestContext.data === "string") {
-               try {
-                   realData = JSON.parse(realRequestContext.data);
-               } catch(e) {
-                   console.log(e);
-                   console.log("realRequestContext.data was not JSON.stringify'd:");
-                   console.log(realRequestContext.data);
-               }
-           }
+           var mockData = convertData(mockRequest.data);
+           var realData = convertData(realRequestContext.data);
 
            if (!_.isEqual(mockRequest.url, realRequestContext.url)) {
                return false;
