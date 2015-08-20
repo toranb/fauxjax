@@ -123,13 +123,41 @@
            var mockVerb = mockHandler.request.method || mockHandler.request.type;
            var realVerb = realRequestContext.method || realRequestContext.type;
            var mockRequest = mockHandler.request;
+           var mockData = mockRequest.data;
+           var realData = realRequestContext.data;
+           if(typeof mockRequest.data === "object") {
+               mockData = mockRequest.data;
+           }
+           if(typeof mockRequest.data === "string") {
+               try {
+                   mockData = JSON.parse(mockRequest.data);
+               } catch(e) {
+                   console.log(e);
+                   console.log("mockRequest.data was not JSON.stringify'd: ");
+                   console.log(mockRequest.data);
+               }
+           }
+
+           if(typeof realRequestContext.data === "object") {
+               realData = realRequestContext.data;
+           }
+           if(typeof realRequestContext.data === "string") {
+               try {
+                   realData = JSON.parse(realRequestContext.data);
+               } catch(e) {
+                   console.log(e);
+                   console.log("realRequestContext.data was not JSON.stringify'd:");
+                   console.log(realRequestContext.data);
+               }
+           }
+
            if (!_.isEqual(mockRequest.url, realRequestContext.url)) {
                return false;
            }
            if (mockVerb && mockVerb.toLowerCase() !== realVerb.toLowerCase()) {
                return false;
            }
-           if (_.some(_.compact([mockRequest.data, realRequestContext.data])) && !_.isEqual(mockRequest.data, realRequestContext.data)) {
+           if (_.some(_.compact([mockData, realData])) && !_.isEqual(mockData, realData)) {
                if ($.fauxjax.settings.strictMatching || mockRequest.data && !realRequestContext.data) {
                  debugInfo(mockRequest.url, "data");
                  return false;

@@ -52,6 +52,50 @@ test "When faux and real request have the same data the request is successfully 
     complete: (xhr, textStatus) ->
       done()
 
+test "When faux and real request have the same data with different key orders the request is successfully faked", (assert) ->
+  done = assert.async()
+  $.fauxjax.new
+    request:
+      method: "POST"
+      url: "/faux-request"
+      data: {foo: "bar", wat: "baz"}
+    response:
+      content: {fakeResponse: "Post success"}
+
+  $.ajax
+    method: "POST"
+    url: "/faux-request"
+    data: {wat: "baz", foo: "bar"}
+    success: (data, textStatus, xhr) ->
+      assert.ok(true, "Request did not succeed and should have been successfully faked")
+      assert.ok(_.isEqual(data, {"fakeResponse": "Post success"}), "Response text not a match received: #{data}")
+    error: (xhr, textStatus) ->
+      assert.ok(false, "Faux data does match the real request data. The request should not have returned an error")
+    complete: (xhr, textStatus) ->
+      done()
+
+test "When faux and real request have the same data JSON.stringify'd the request is successfully faked", (assert) ->
+  done = assert.async()
+  $.fauxjax.new
+    request:
+      method: "POST"
+      url: "/faux-request"
+      data: JSON.stringify({foo: "bar", wat: "baz"})
+    response:
+      content: {fakeResponse: "Post success"}
+
+  $.ajax
+    method: "POST"
+    url: "/faux-request"
+    data: JSON.stringify({wat: "baz", foo: "bar"})
+    success: (data, textStatus, xhr) ->
+      assert.ok(true, "Request did not succeed and should have been successfully faked")
+      assert.ok(_.isEqual(data, {"fakeResponse": "Post success"}), "Response text not a match received: #{data}")
+    error: (xhr, textStatus) ->
+      assert.ok(false, "Faux data does match the real request data. The request should not have returned an error")
+    complete: (xhr, textStatus) ->
+      done()
+
 test "Correctly matches request data when empty objects", (assert) ->
   done = assert.async()
   $.fauxjax.new
