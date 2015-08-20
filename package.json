@@ -1,6 +1,6 @@
 {
   "name": "fauxjax",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Faux ajax requests for your javascript testing needs",
   "url": "https://github.com/JarrodCTaylor/fauxjax",
   "keywords": ["ajax", "mock", "fake", "unit"],
@@ -14,8 +14,8 @@
     "url": "https://github.com/JarrodCTaylor/fauxjax/issues"
   },
   "licenses": {
-    "type": "WTFPL",
-    "url": "http://www.wtfpl.net/"
+    "type": "MIT",
+    "url": "http://opensource.org/licenses/MIT"
   },
   "dependencies": {
     "lodash": "2.4.1"

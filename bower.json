@@ -1,6 +1,7 @@
 {
   "name": "fauxjax",
-  "version": "1.0.5",
+  "version": "1.0.6",
+  "license": "MIT",
   "main": ["dist/fauxjax.min.js"],
   "ignore": [
     ".gitignore",
