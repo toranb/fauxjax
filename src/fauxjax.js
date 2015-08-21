@@ -113,6 +113,19 @@
     }
 
     /**
+     * Attempts to parse JSON to an object
+     * @param {Object} realRequestContext The real context of the actual Ajax request
+     * @returns {Object|String} Returns the realRequestContext.data as is or parsed
+     *                          if contentType is application/json
+     */
+    function parseContentType(realRequestContext) {
+      if (realRequestContext.contentType === "application/json") {
+        return JSON.parse(realRequestContext.data);
+      }
+      return realRequestContext.data;
+    }
+
+    /**
      * Compares a mockHandler and a real Ajax request and determines if the real request should be mocked.
      * @param {Object} mockHandler A fauxjax settings object
      * @param {Object} realRequestContext The real context of the actual Ajax request
@@ -122,6 +135,8 @@
         if (mockHandler) {
            var mockVerb = mockHandler.request.method || mockHandler.request.type;
            var realVerb = realRequestContext.method || realRequestContext.type;
+           var mockData = mockHandler.request.data;
+           var realData = parseContentType(realRequestContext);
            var mockRequest = mockHandler.request;
            if (!_.isEqual(mockRequest.url, realRequestContext.url)) {
                return false;
@@ -129,8 +144,8 @@
            if (mockVerb && mockVerb.toLowerCase() !== realVerb.toLowerCase()) {
                return false;
            }
-           if (_.some(_.compact([mockRequest.data, realRequestContext.data])) && !_.isEqual(mockRequest.data, realRequestContext.data)) {
-               if ($.fauxjax.settings.strictMatching || mockRequest.data && !realRequestContext.data) {
+           if (_.some(_.compact([mockData, realData])) && !_.isEqual(mockData, realData)) {
+               if ($.fauxjax.settings.strictMatching || mockData && !realData) {
                  debugInfo(mockRequest.url, "data");
                  return false;
                }
@@ -158,7 +173,9 @@
     }
 
     /**
-     * Determine the respinse content-type based on the value of content
+     * Determine the response content-type based on the value of content
+     * @param {Object|String} content The value of `content` in the mock request
+     * @returns {String} Returns a string of the contentType
      */
     function getResponseContentType(content) {
         if (_.isObject(content)) {
@@ -186,7 +203,7 @@
     /**
      * Build the string used for response headers in the faux xhr object
      * @param {Object} mockRequestContext
-     * @returns {Sting}
+     * @returns {Sting} Returns response headers
      */
     function buildResponseHeaders(mockRequestContext) {
         var headers = '';
