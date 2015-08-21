@@ -173,7 +173,9 @@
     }
 
     /**
-     * Determine the respinse content-type based on the value of content
+     * Determine the response content-type based on the value of content
+     * @param {Object|String} content The value of `content` in the mock request
+     * @returns {String} Returns a string of the contentType
      */
     function getResponseContentType(content) {
         if (_.isObject(content)) {
@@ -201,7 +203,7 @@
     /**
      * Build the string used for response headers in the faux xhr object
      * @param {Object} mockRequestContext
-     * @returns {Sting}
+     * @returns {Sting} Returns response headers
      */
     function buildResponseHeaders(mockRequestContext) {
         var headers = '';
