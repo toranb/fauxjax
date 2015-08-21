@@ -113,11 +113,12 @@
     }
 
     /**
-     * Attempts to convert data to an object for comparison
-     * @param {String} A string representing the data for either a mock or real request
-     * @returns {Object|String}
+     * Attempts to parse JSON to an object
+     * @param {Object} realRequestContext The real context of the actual Ajax request
+     * @returns {Object|String} Returns the realRequestContext.data as is or parsed
+     *                          if contentType is application/json
      */
-    function convertData(realRequestContext) {
+    function parseContentType(realRequestContext) {
       if (realRequestContext.contentType === "application/json") {
         return JSON.parse(realRequestContext.data);
       }
@@ -134,11 +135,9 @@
         if (mockHandler) {
            var mockVerb = mockHandler.request.method || mockHandler.request.type;
            var realVerb = realRequestContext.method || realRequestContext.type;
+           var mockData = mockHandler.request.data;
+           var realData = parseContentType(realRequestContext);
            var mockRequest = mockHandler.request;
-
-           var mockData = mockRequest.data;
-           var realData = convertData(realRequestContext);
-
            if (!_.isEqual(mockRequest.url, realRequestContext.url)) {
                return false;
            }
@@ -146,7 +145,7 @@
                return false;
            }
            if (_.some(_.compact([mockData, realData])) && !_.isEqual(mockData, realData)) {
-               if ($.fauxjax.settings.strictMatching || mockRequest.data && !realRequestContext.data) {
+               if ($.fauxjax.settings.strictMatching || mockData && !realData) {
                  debugInfo(mockRequest.url, "data");
                  return false;
                }
