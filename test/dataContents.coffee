@@ -97,6 +97,29 @@ test "When faux and real request have the same data JSON.stringify'd the request
     complete: (xhr, textStatus) ->
       done()
 
+test "backwards compatibility test to ensure that responses can be compared when they are both strings", (assert) ->
+  done = assert.async()
+  $.fauxjax.new
+    request:
+      method: "POST"
+      url: "/faux-request"
+      data: JSON.stringify({foo: "bar", wat: "baz"})
+    response:
+      content: {fakeResponse: "Post success"}
+
+  $.ajax
+    method: "POST"
+    url: "/faux-request"
+    data: JSON.stringify({foo: "bar", wat: "baz"})
+    contentType: "application/json"
+    success: (data, textStatus, xhr) ->
+      assert.ok(true, "Request did not succeed and should have been successfully faked")
+      assert.ok(_.isEqual(data, {"fakeResponse": "Post success"}), "Response text not a match received: #{data}")
+    error: (xhr, textStatus) ->
+      assert.ok(false, "Faux data does match the real request data. The request should not have returned an error")
+    complete: (xhr, textStatus) ->
+      done()
+
 test "Handle empty body when content type is specified as application/json", (assert) ->
   done = assert.async()
   $.fauxjax.new
