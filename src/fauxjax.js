@@ -115,11 +115,12 @@
     /**
      * Attempts to parse JSON to an object
      * @param {Object} realRequestContext The real context of the actual Ajax request
+     * @param {String} mockDataType The typeof data you are expecting
      * @returns {Object|String} Returns the realRequestContext.data as is or parsed
      *                          if contentType is application/json
      */
-    function parseContentType(realRequestContext) {
-      if (realRequestContext.contentType === "application/json" && realRequestContext.data) {
+    function parseContentType(realRequestContext, mockDataType) {
+      if (realRequestContext.contentType === "application/json" && realRequestContext.data && mockDataType === "object") {
         return JSON.parse(realRequestContext.data);
       }
       return realRequestContext.data;
@@ -136,7 +137,7 @@
            var mockVerb = mockHandler.request.method || mockHandler.request.type;
            var realVerb = realRequestContext.method || realRequestContext.type;
            var mockData = mockHandler.request.data;
-           var realData = parseContentType(realRequestContext);
+           var realData = parseContentType(realRequestContext, typeof mockData);
            var mockRequest = mockHandler.request;
            if (!_.isEqual(mockRequest.url, realRequestContext.url)) {
                return false;
