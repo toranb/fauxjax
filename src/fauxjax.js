@@ -117,13 +117,11 @@
      * @param {String} A string representing the data for either a mock or real request
      * @returns {Object|String}
      */
-    function convertData(data) {
-      if (typeof data === "string") {
-        try {
-          return JSON.parse(data);
-        } catch(e) { }
+    function convertData(realRequestContext) {
+      if (realRequestContext.contentType === "application/json") {
+        return JSON.parse(realRequestContext.data);
       }
-      return data;
+      return realRequestContext.data;
     }
 
     /**
@@ -138,8 +136,8 @@
            var realVerb = realRequestContext.method || realRequestContext.type;
            var mockRequest = mockHandler.request;
 
-           var mockData = convertData(mockRequest.data);
-           var realData = convertData(realRequestContext.data);
+           var mockData = mockRequest.data;
+           var realData = convertData(realRequestContext);
 
            if (!_.isEqual(mockRequest.url, realRequestContext.url)) {
                return false;

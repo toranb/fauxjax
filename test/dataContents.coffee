@@ -80,7 +80,7 @@ test "When faux and real request have the same data JSON.stringify'd the request
     request:
       method: "POST"
       url: "/faux-request"
-      data: JSON.stringify({foo: "bar", wat: "baz"})
+      data: {foo: "bar", wat: "baz"}
     response:
       content: {fakeResponse: "Post success"}
 
@@ -88,6 +88,7 @@ test "When faux and real request have the same data JSON.stringify'd the request
     method: "POST"
     url: "/faux-request"
     data: JSON.stringify({wat: "baz", foo: "bar"})
+    contentType: "application/json"
     success: (data, textStatus, xhr) ->
       assert.ok(true, "Request did not succeed and should have been successfully faked")
       assert.ok(_.isEqual(data, {"fakeResponse": "Post success"}), "Response text not a match received: #{data}")
