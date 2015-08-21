@@ -119,7 +119,7 @@
      *                          if contentType is application/json
      */
     function parseContentType(realRequestContext) {
-      if (realRequestContext.contentType === "application/json") {
+      if (realRequestContext.contentType === "application/json" && realRequestContext.data) {
         return JSON.parse(realRequestContext.data);
       }
       return realRequestContext.data;
