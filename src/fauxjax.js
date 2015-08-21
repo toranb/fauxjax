@@ -115,7 +115,7 @@
     /**
      * Attempts to parse JSON to an object
      * @param {Object} realRequestContext The real context of the actual Ajax request
-     * @param {String} mockDataType The typeof mockData
+     * @param {String} mockDataType The typeof data you are expecting
      * @returns {Object|String} Returns the realRequestContext.data as is or parsed
      *                          if contentType is application/json
      */
