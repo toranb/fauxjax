@@ -107,9 +107,9 @@
      */
     function debugInfo(url, mismatchedProperty) {
       if ($.fauxjax.settings.debug) {
-        console.log("===== Fauxjax Debug Info =====");
-        console.log("URL: " + url);
-        console.log("[" + mismatchedProperty + "] property does not match actual request");
+        console.log('===== Fauxjax Debug Info =====');
+        console.log('URL: ' + url);
+        console.log('[' + mismatchedProperty + '] property does not match actual request');
       }
     }
 
@@ -134,7 +134,7 @@
      * @returns {String|Object}    The parsed data to be compared for a match
      */
     function parseData(data, contentType) {
-      if (_.isEqual(contentType, "application/json") && !_.isObject(data)) { return JSON.parse(data); }
+      if (_.isEqual(contentType, 'application/json') && !_.isObject(data)) { return JSON.parse(data); }
       return data;
     }
 
@@ -155,15 +155,20 @@
            var realData        = parseData(realRequestContext.data, realContentType);
            if (!_.isEqual(mockRequest.url, realRequestContext.url))           { return false; }
            if (mockVerb && mockVerb.toLowerCase() !== realVerb.toLowerCase()) { return false; }
-           if (!_.isEqual(realContentType, mockContentType))                  { return false; }
+           if (!_.isEqual(realContentType, mockContentType))                  {
+               if ($.fauxjax.settings.strictMatching || mockData && !realData) {
+                 debugInfo(mockRequest.url, 'contentType');
+                 return false;
+               }
+           }
            if (_.some(_.compact([mockData, realData])) && !_.isEqual(mockData, realData)) {
                if ($.fauxjax.settings.strictMatching || mockData && !realData) {
-                 debugInfo(mockRequest.url, "data");
+                 debugInfo(mockRequest.url, 'data');
                  return false;
                }
            }
            if (!_.isEqual(mockRequest.headers, realRequestContext.headers) && $.fauxjax.settings.strictMatching) {
-               debugInfo(mockRequest.url, "headers");
+               debugInfo(mockRequest.url, 'headers');
                return false;
            }
            return true;
@@ -191,9 +196,9 @@
      */
     function getResponseContentType(content) {
         if (_.isObject(content)) {
-            return "json";
+            return 'json';
         }
-        return "text";
+        return 'text';
     }
 
     /**
@@ -220,7 +225,7 @@
     function buildResponseHeaders(mockRequestContext) {
         var headers = '';
         $.each(mockRequestContext.headers, function(k, v) {
-            headers += k + ': ' + v + "\n";
+            headers += k + ': ' + v + '\n';
         });
         return headers;
     }
