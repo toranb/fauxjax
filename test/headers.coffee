@@ -73,6 +73,8 @@ test "Fauxjax can set additional response headers", (assert) ->
 
 test "Fauxjax will not mock request if request headers do not match", (assert) ->
   done = assert.async()
+  expect(0)
+
   $.fauxjax.new
     request:
       method: "GET"
@@ -84,8 +86,6 @@ test "Fauxjax will not mock request if request headers do not match", (assert) -
     method: "GET"
     url: "/fauxjax-request"
     headers: {"Authorization": "Basic " + btoa("JarrodCTaylor:password1")}
-    error: (xhr, textStatus) ->
-      assert.ok(true, "We expect to get an error")
     success: (data, textStatus, xhr) ->
       assert.ok(false, "Request should not have been mocked. Headers didn't match")
     complete: (xhr, textStatus) ->

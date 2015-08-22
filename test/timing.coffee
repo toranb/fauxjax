@@ -83,6 +83,8 @@ test "Fauxjax response time is correctly simulated fast", (assert) ->
 
 test "Forcing timeout", (assert) ->
   done = assert.async()
+  expect(0)
+
   $.fauxjax.new
     request:
       method: "GET"
@@ -96,8 +98,6 @@ test "Forcing timeout", (assert) ->
     url: "/fauxjax-request"
     success: (data, textStatus, xhr) ->
       assert.ok(false, "isTimeout was set to true so reuqest should not have successfully returned")
-    error: (xhr, textStatus) ->
-      assert.ok(true, "isTimeout was set to true so request should have returned an error")
     complete: (xhr, textStatus) ->
       done()
 

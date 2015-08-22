@@ -8,6 +8,7 @@ module "Test Fake Vs Real Request Data",
 
 test "When faux and real requests have different data fauxjax does not fake the request", (assert) ->
   done = assert.async()
+  expect(0)
   $.fauxjax.new
     request:
       method: "POST"
@@ -21,8 +22,6 @@ test "When faux and real requests have different data fauxjax does not fake the 
     data: {bar: "baz"}
     success: (data, textStatus, xhr) ->
       assert.ok(false, "Faux data does not match real request data. Request should not have succeed")
-    error: (xhr, textStatus) ->
-      assert.ok(true, "Faux data does not match real request data. Request should have returned and error")
     complete: (xhr, textStatus) ->
       done()
 
@@ -45,7 +44,6 @@ test "When faux and real request have the same data the request is successfully 
     url: "/faux-request"
     data: {values: [1, 2, 3]}
     success: (data, textStatus, xhr) ->
-      assert.ok(true, "Request did not succeed and should have been successfully faked")
       assert.ok(_.isEqual(data, {"fakeResponse": "Post success"}), "Response text not a match received: #{data}")
     error: (xhr, textStatus) ->
       assert.ok(false, "Faux data does match the real request data. The request should not have returned an error")
@@ -67,7 +65,6 @@ test "When faux and real request have the same data with different key orders th
     url: "/faux-request"
     data: {wat: "baz", foo: "bar"}
     success: (data, textStatus, xhr) ->
-      assert.ok(true, "Request did not succeed and should have been successfully faked")
       assert.ok(_.isEqual(data, {"fakeResponse": "Post success"}), "Response text not a match received: #{data}")
     error: (xhr, textStatus) ->
       assert.ok(false, "Faux data does match the real request data. The request should not have returned an error")
@@ -91,7 +88,6 @@ test "When faux and real request have the same data one JSON.stringify'd and the
     data: JSON.stringify({wat: "baz", foo: "bar"})
     contentType: "application/json"
     success: (data, textStatus, xhr) ->
-      assert.ok(true, "Request did not succeed and should have been successfully faked")
       assert.ok(_.isEqual(data, {"fakeResponse": "Post success"}), "Response text not a match received: #{data}")
     error: (xhr, textStatus) ->
       assert.ok(false, "Faux data does match the real request data. The request should not have returned an error")
@@ -115,7 +111,6 @@ test "When faux and real request have the same data both JSON.stringify'd object
     data: JSON.stringify({wat: "baz", foo: "bar"})
     contentType: "application/json"
     success: (data, textStatus, xhr) ->
-      assert.ok(true, "Request did not succeed and should have been successfully faked")
       assert.ok(_.isEqual(data, {"fakeResponse": "Post success"}), "Response text not a match received: #{data}")
     error: (xhr, textStatus) ->
       assert.ok(false, "Faux data does match the real request data. The request should not have returned an error")
@@ -124,6 +119,8 @@ test "When faux and real request have the same data both JSON.stringify'd object
 
 test "Correctly matches request data when empty objects", (assert) ->
   done = assert.async()
+  expect(0)
+
   $.fauxjax.new
     request:
       method: "POST"
@@ -136,8 +133,6 @@ test "Correctly matches request data when empty objects", (assert) ->
     method: "POST"
     url: "/faux-request"
     data: {}
-    success: (data, textStatus, xhr) ->
-      assert.ok(true, "Request did not succeed and should have been successfully faked")
     error: (xhr, textStatus) ->
       assert.ok(false, "Error was returned from a request that should have successfully been faked")
     complete: (xhr, textStatus) ->
@@ -145,6 +140,8 @@ test "Correctly matches request data when empty objects", (assert) ->
 
 test "Data can be Undefined and Null and will still be succeffully mocked", (assert) ->
   done = assert.async()
+  expect(0)
+
   $.fauxjax.new
     request:
       method: "POST"
@@ -157,8 +154,6 @@ test "Data can be Undefined and Null and will still be succeffully mocked", (ass
     method: "POST"
     url: "/faux-request"
     data: undefined
-    success: (data, textStatus, xhr) ->
-      assert.ok(true, "Request did not succeed and should have been successfully faked")
     error: (xhr, textStatus) ->
       assert.ok(false, "Error was returned from a request that should have successfully been faked")
     complete: (xhr, textStatus) ->

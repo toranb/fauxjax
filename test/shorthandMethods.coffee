@@ -18,7 +18,6 @@ test "jQuery shorthand method for post is correctly faked", (assert) ->
 
   $.post( "/faux-request", {empty: "data"}, (response) ->
     assert.equal("bar", response.foo)
-    assert.ok(true)
   ).fail(->
     assert.ok(false, "Request should have been successfully faked")
   ).complete(->
@@ -36,7 +35,6 @@ test "jQuery shorthand method for get is correctly faked", (assert) ->
 
   $.get( "/faux-request", (response) ->
     assert.equal("bar", response.foo)
-    assert.ok(true)
   ).fail(->
     assert.ok(false, "Request should have been successfully faked")
   ).complete(->
@@ -54,7 +52,6 @@ test "jQuery shorthand method for getJSON is correctly faked", (assert) ->
 
   $.getJSON( "/faux-request", (response) ->
     assert.equal("bar", response.foo)
-    assert.ok(true)
   ).fail(->
     assert.ok(false, "Request should have been successfully faked")
   ).complete(->

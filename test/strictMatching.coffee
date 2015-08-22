@@ -9,6 +9,8 @@ module "Test matches when strict matching is turned off",
 
 test "When faux request has no data and real request does fauxjax does fake request with strict matching set to false", (assert) ->
   done = assert.async()
+  expect(0)
+
   $.fauxjax.new
     request:
       method: "POST"
@@ -20,8 +22,6 @@ test "When faux request has no data and real request does fauxjax does fake requ
     method: "POST"
     url: "/faux-request"
     data: {empty: "data"}
-    success: (data, textStatus, xhr) ->
-      assert.ok(true, "Strict mode set to false. Request should succeed")
     error: (xhr, textStatus) ->
       assert.ok(false, "Strict mode set to false. Request should succeed")
     complete: (xhr, textStatus) ->
@@ -29,6 +29,8 @@ test "When faux request has no data and real request does fauxjax does fake requ
 
 test "When faux request has data and real request does not fauxjax does not fake request with strict matching set to false", (assert) ->
   done = assert.async()
+  expect(0)
+
   $.fauxjax.new
     request:
       method: "POST"
@@ -42,8 +44,6 @@ test "When faux request has data and real request does not fauxjax does not fake
     url: "/faux-request"
     success: (data, textStatus, xhr) ->
       assert.ok(false, "Faux has data and request does not. Request should not succeed")
-    error: (xhr, textStatus) ->
-      assert.ok(true, "Faux has data and request does not. Request should not succeed")
     complete: (xhr, textStatus) ->
       done()
 
@@ -53,6 +53,8 @@ test "When faux request has data and real request does not fauxjax does not fake
 
 test "When faux request has no method fauxjax does fake request", (assert) ->
   done = assert.async()
+  expect(0)
+
   $.fauxjax.new
     request:
       url: "/faux-request"
@@ -63,8 +65,6 @@ test "When faux request has no method fauxjax does fake request", (assert) ->
     method: "POST"
     url: "/faux-request"
     data: {empty: "data"}
-    success: (data, textStatus, xhr) ->
-      assert.ok(true, "No method provided on faux. Request should succeed")
     error: (xhr, textStatus) ->
       assert.ok(false, "No method provided on faux. Request should succeed")
     complete: (xhr, textStatus) ->
@@ -72,6 +72,8 @@ test "When faux request has no method fauxjax does fake request", (assert) ->
 
 test "When faux request has no request headers and real request does fauxjax does fake request with strict matching set to false", (assert) ->
   done = assert.async()
+  expect(0)
+
   $.fauxjax.new
     request:
       method: "POST"
@@ -84,8 +86,6 @@ test "When faux request has no request headers and real request does fauxjax doe
     url: "/faux-request"
     data: {empty: "data"}
     headers: {"Authorization": "Basic " + btoa("JarrodCTaylor:password1")}
-    success: (data, textStatus, xhr) ->
-      assert.ok(true, "Strict mode set to false. Request should succeed")
     error: (xhr, textStatus) ->
       assert.ok(false, "Strict mode set to false. Request should succeed")
     complete: (xhr, textStatus) ->

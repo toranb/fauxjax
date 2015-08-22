@@ -8,6 +8,8 @@ module "Test Query Parameters In Url",
 
 test "Fauxjax correctly fakes a url that uses query params", (assert) ->
   done = assert.async()
+  expect(0)
+
   $.fauxjax.new
     request:
       method: "GET"
@@ -18,8 +20,6 @@ test "Fauxjax correctly fakes a url that uses query params", (assert) ->
   $.ajax
     method: "GET"
     url: "/faux-request/?params=im-a-query"
-    success: (data, textStatus, xhr) ->
-      assert.ok(true, "Urls match. Request should have successfully been faked")
     error: (xhr, textStatus) ->
       assert.ok(false, "Urls match. Request should have successfully been faked")
     complete: (xhr, textStatus) ->

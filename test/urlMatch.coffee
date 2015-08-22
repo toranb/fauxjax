@@ -8,6 +8,8 @@ module "Test Fake Vs Real Request URL",
 
 test "When faux and real requests have different urls fauxjax does not fake request", (assert) ->
   done = assert.async()
+  expect(0)
+
   $.fauxjax.new
     request:
       method: "POST"
@@ -22,8 +24,6 @@ test "When faux and real requests have different urls fauxjax does not fake requ
     data: {empty: "data"}
     success: (data, textStatus, xhr) ->
       assert.ok(false, "Faux request url does not match real request url. Request should not have succeed")
-    error: (xhr, textStatus) ->
-      assert.ok(true, "Faux request url does not match real request url. Request should have returned and error")
     complete: (xhr, textStatus) ->
       done()
 
@@ -33,6 +33,8 @@ test "When faux and real requests have different urls fauxjax does not fake requ
 
 test "When faux and real requests have the same urls fauxjax does fake request", (assert) ->
   done = assert.async()
+  expect(0)
+
   $.fauxjax.new
     request:
       method: "GET"
@@ -43,8 +45,6 @@ test "When faux and real requests have the same urls fauxjax does fake request",
   $.ajax
     method: "GET"
     url: "/faux-request"
-    success: (data, textStatus, xhr) ->
-      assert.ok(true, "Faux request url does match real request url. Request should have succeed")
     error: (xhr, textStatus) ->
       assert.ok(false, "Faux request url does match real request url. Request should not have returned an error")
     complete: (xhr, textStatus) ->

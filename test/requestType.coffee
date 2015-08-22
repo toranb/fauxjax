@@ -8,6 +8,8 @@ module "Test Fake Vs Real request method",
 
 test "When faux and real requests have different request types (legacy jQuery api) fauxjax does not fake request POST vs PATCH", (assert) ->
   done = assert.async()
+  expect(0)
+
   $.fauxjax.new
     request:
       method: "POST"
@@ -22,8 +24,6 @@ test "When faux and real requests have different request types (legacy jQuery ap
     data: {foo: "bar"}
     success: (data, textStatus, xhr) ->
       assert.ok(false, "Faux request type does not match real request request type. Request should not have succeed")
-    error: (xhr, textStatus) ->
-      assert.ok(true, "Faux request type does not match real request request. Request should have returned and error")
     complete: (xhr, textStatus) ->
       done()
 
@@ -33,6 +33,8 @@ test "When faux and real requests have different request types (legacy jQuery ap
 
 test "When faux and real requests have different request methods fauxjax does not fake request POST vs GET", (assert) ->
   done = assert.async()
+  expect(0)
+
   $.fauxjax.new
     request:
       method: "POST"
@@ -46,8 +48,6 @@ test "When faux and real requests have different request methods fauxjax does no
     url: "/faux-request"
     success: (data, textStatus, xhr) ->
       assert.ok(false, "Faux request method does not match real request request method. Request should not have succeed")
-    error: (xhr, textStatus) ->
-      assert.ok(true, "Faux request method does not match real request request. Request should have returned and error")
     complete: (xhr, textStatus) ->
       done()
 
@@ -57,6 +57,7 @@ test "When faux and real requests have different request methods fauxjax does no
 
 test "When faux and real requests have different request methods fauxjax does not fake request POST vs PUT", (assert) ->
   done = assert.async()
+  expect(0)
   $.fauxjax.new
     request:
       method: "POST"
@@ -71,8 +72,6 @@ test "When faux and real requests have different request methods fauxjax does no
     data: {empty: "data"}
     success: (data, textStatus, xhr) ->
       assert.ok(false, "Faux request method does not match real request request method. Request should not have succeed")
-    error: (xhr, textStatus) ->
-      assert.ok(true, "Faux request method does not match real request request. Request should have returned and error")
     complete: (xhr, textStatus) ->
       done()
 
@@ -82,6 +81,8 @@ test "When faux and real requests have different request methods fauxjax does no
 
 test "When faux and real requests have different request methods fauxjax does not fake request POST vs PUT", (assert) ->
   done = assert.async()
+  expect(0)
+
   $.fauxjax.new
     request:
       method: "POST"
@@ -96,8 +97,6 @@ test "When faux and real requests have different request methods fauxjax does no
     data: {empty: "data"}
     success: (data, textStatus, xhr) ->
       assert.ok(false, "Faux request method does not match real request request method. Request should not have succeed")
-    error: (xhr, textStatus) ->
-      assert.ok(true, "Faux request method does not match real request request. Request should have returned and error")
     complete: (xhr, textStatus) ->
       done()
 
@@ -118,7 +117,6 @@ test "When faux and real requests have the same request methods fauxjax does fak
     method: "GET"
     url: "/faux-request"
     success: (data, textStatus, xhr) ->
-      assert.ok(true, "Faux request method does match real request method. Request should have succeed")
       assert.ok(_.isEqual(data, {"foo": "bar"}))
     error: (xhr, textStatus) ->
       assert.ok(false, "Faux request does match real request data. Request should not have returned and error")
@@ -146,6 +144,8 @@ test "Case-insensitive matching for request methods", (assert) ->
 test "Multiple handlers can exist for the same url with different verbs", (assert) ->
   done1 = assert.async()
   done2 = assert.async()
+  expect(0)
+
   $.fauxjax.new
     request:
       method: "GET"
@@ -160,8 +160,8 @@ test "Multiple handlers can exist for the same url with different verbs", (asser
   $.ajax
     method: "GET"
     url: "/faux-request"
-    success: (data, textStatus, xhr) ->
-      assert.ok(true, "Handler with a GET verb does exist for this request it should be successfully mocked")
+    error: (xhr, textStatus) ->
+      assert.ok(false, "Handler with a GET verb does exist for this request it should be successfully mocked")
     complete: (xhr, textStatus) ->
       done1()
 
@@ -169,7 +169,7 @@ test "Multiple handlers can exist for the same url with different verbs", (asser
     method: "POST"
     url: "/faux-request"
     data: {empty: "data"}
-    success: (data, textStatus, xhr) ->
-      assert.ok(true, "Handler with a POST verb does exist for this request it should be successfully mocked")
+    error: (xhr, textStatus) ->
+      assert.ok(false, "Handler with a POST verb does exist for this request it should be successfully mocked")
     complete: (xhr, textStatus) ->
       done2()
