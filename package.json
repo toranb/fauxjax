@@ -13,12 +13,9 @@
   "bugs": {
     "url": "https://github.com/JarrodCTaylor/fauxjax/issues"
   },
-  "licenses": {
-    "type": "MIT",
-    "url": "http://opensource.org/licenses/MIT"
-  },
+  "license": "MIT",
   "dependencies": {
-    "lodash": "2.4.1"
+    "lodash": "3.10.1"
   },
   "devDependencies": {
     "grunt-cli": "*",

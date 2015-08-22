@@ -26,10 +26,11 @@
      */
     $.fauxjax.settings = {
         status:        200,
-        statusText:    "OK",
+        statusText:    'OK',
         responseTime:  0,
         isTimeout:     false,
         content:  '',
+        contentType: 'application/x-www-form-urlencoded',
         strictMatching: true,
         debug: false,
         headers:       {}
@@ -113,16 +114,28 @@
     }
 
     /**
-     * Attempts to parse JSON to an object
-     * @param {Object} realRequestContext The real context of the actual Ajax request
-     * @returns {Object|String} Returns the realRequestContext.data as is or parsed
-     *                          if contentType is application/json
+     * Currently fauxjax expects that contentType will be either `x-www-form-urlencoded` or `json`
+     * If it is not one we return the other.
+     * @param {Object} handler The request handler for either the real request or the fake
+     * @returns {String} Returns the contentType
      */
-    function parseContentType(realRequestContext) {
-      if (realRequestContext.contentType === "application/json") {
-        return JSON.parse(realRequestContext.data);
-      }
-      return realRequestContext.data;
+    function parseContentType(handler) {
+      if (_.startsWith(handler.contentType, 'application/json')) { return 'application/json'; }
+      return 'application/x-www-form-urlencoded';
+    }
+
+    /**
+     * Currently fauxjax expects that contentType will be either `x-www-form-urlencoded` or `json`
+     * Given this assumption we will have data that is either text, objects or a stringified object
+     * based on the specified `contentType` pase the data to allow comparison in the `shouldMockRequest`
+     * function.
+     * @param {String|Object} data The data provided with the request
+     * @param {String} contentType The contentType for the request
+     * @returns {String|Object}    The parsed data to be compared for a match
+     */
+    function parseData(data, contentType) {
+      if (_.isEqual(contentType, "application/json") && !_.isObject(data)) { return JSON.parse(data); }
+      return data;
     }
 
     /**
@@ -133,17 +146,16 @@
      */
     function shouldMockRequest(mockHandler, realRequestContext) {
         if (mockHandler) {
-           var mockVerb = mockHandler.request.method || mockHandler.request.type;
-           var realVerb = realRequestContext.method || realRequestContext.type;
-           var mockData = mockHandler.request.data;
-           var realData = parseContentType(realRequestContext);
-           var mockRequest = mockHandler.request;
-           if (!_.isEqual(mockRequest.url, realRequestContext.url)) {
-               return false;
-           }
-           if (mockVerb && mockVerb.toLowerCase() !== realVerb.toLowerCase()) {
-               return false;
-           }
+           var mockVerb        = mockHandler.request.method || mockHandler.request.type;
+           var realVerb        = realRequestContext.method || realRequestContext.type;
+           var realContentType = parseContentType(realRequestContext);
+           var mockContentType = parseContentType(mockHandler.request);
+           var mockRequest     = mockHandler.request;
+           var mockData        = parseData(mockHandler.request.data, mockContentType);
+           var realData        = parseData(realRequestContext.data, realContentType);
+           if (!_.isEqual(mockRequest.url, realRequestContext.url))           { return false; }
+           if (mockVerb && mockVerb.toLowerCase() !== realVerb.toLowerCase()) { return false; }
+           if (!_.isEqual(realContentType, mockContentType))                  { return false; }
            if (_.some(_.compact([mockData, realData])) && !_.isEqual(mockData, realData)) {
                if ($.fauxjax.settings.strictMatching || mockData && !realData) {
                  debugInfo(mockRequest.url, "data");
@@ -197,7 +209,7 @@
                                   this.responseText = formatResponseText(mockRequestContext.content);
                                   this.onload.call(this);
                              }, this);
-        realRequestContext.async ? setTimeout(process, mockRequestContext.responseTime) : process();
+        return realRequestContext.async ? setTimeout(process, mockRequestContext.responseTime) : process();
     }
 
     /**

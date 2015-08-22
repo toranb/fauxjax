@@ -74,13 +74,38 @@ test "When faux and real request have the same data with different key orders th
     complete: (xhr, textStatus) ->
       done()
 
-test "When faux and real request have the same data JSON.stringify'd the request is successfully faked", (assert) ->
+test "When faux and real request have the same data one JSON.stringify'd and the other an object the request is successfully faked", (assert) ->
   done = assert.async()
   $.fauxjax.new
     request:
       method: "POST"
       url: "/faux-request"
+      contentType: "application/json"
       data: {foo: "bar", wat: "baz"}
+    response:
+      content: {fakeResponse: "Post success"}
+
+  $.ajax
+    method: "POST"
+    url: "/faux-request"
+    data: JSON.stringify({wat: "baz", foo: "bar"})
+    contentType: "application/json"
+    success: (data, textStatus, xhr) ->
+      assert.ok(true, "Request did not succeed and should have been successfully faked")
+      assert.ok(_.isEqual(data, {"fakeResponse": "Post success"}), "Response text not a match received: #{data}")
+    error: (xhr, textStatus) ->
+      assert.ok(false, "Faux data does match the real request data. The request should not have returned an error")
+    complete: (xhr, textStatus) ->
+      done()
+
+test "When faux and real request have the same data both JSON.stringify'd objects the request is successfully faked", (assert) ->
+  done = assert.async()
+  $.fauxjax.new
+    request:
+      method: "POST"
+      url: "/faux-request"
+      contentType: "application/json"
+      data: JSON.stringify({foo: "bar", wat: "baz"})
     response:
       content: {fakeResponse: "Post success"}
 
@@ -122,19 +147,40 @@ test "Data can be Undefined and Null and will still be succeffully mocked", (ass
   done = assert.async()
   $.fauxjax.new
     request:
-      method: "GET"
+      method: "POST"
       url: "/faux-request"
       data: null
     response:
       content: {}
 
   $.ajax
-    method: "GET"
+    method: "POST"
     url: "/faux-request"
     data: undefined
     success: (data, textStatus, xhr) ->
       assert.ok(true, "Request did not succeed and should have been successfully faked")
     error: (xhr, textStatus) ->
-      asert.ok(false, "Error was returned from a request that should have successfully been faked")
+      assert.ok(false, "Error was returned from a request that should have successfully been faked")
+    complete: (xhr, textStatus) ->
+      done()
+
+test "Data can be text and will still be succeffully mocked", (assert) ->
+  done = assert.async()
+  $.fauxjax.new
+    request:
+      method: "POST"
+      url: "/faux-request"
+      data: "I am just text"
+    response:
+      content: {fakeResponse: "Post success"}
+
+  $.ajax
+    method: "POST"
+    url: "/faux-request"
+    data: "I am just text"
+    success: (data, textStatus, xhr) ->
+      assert.ok(_.isEqual(data, {"fakeResponse": "Post success"}), "Response text not a match received: #{data}")
+    error: (xhr, textStatus) ->
+      assert.ok(false, "Error was returned from a request that should have successfully been faked")
     complete: (xhr, textStatus) ->
       done()
