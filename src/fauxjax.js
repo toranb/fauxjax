@@ -134,7 +134,7 @@
      * @returns {String|Object}    The parsed data to be compared for a match
      */
     function parseData(data, contentType) {
-      if (_.isEqual(contentType, 'application/json') && !_.isObject(data)) { return JSON.parse(data); }
+      if (_.isEqual(contentType, 'application/json') && data && !_.isObject(data)) { return JSON.parse(data); }
       return data;
     }
 

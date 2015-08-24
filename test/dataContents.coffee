@@ -50,6 +50,28 @@ test "When faux and real request have the same data the request is successfully 
     complete: (xhr, textStatus) ->
       done()
 
+test "When faux requests come in with content specified and no data, they should be parsed and compared correctly", (assert) ->
+  done = assert.async()
+  $.fauxjax.new
+    request:
+      method: "POST"
+      url: "/faux-request"
+      contentType: "application/json"
+    response:
+      status: 201
+      content: {}
+
+  $.ajax
+    method: "POST"
+    url: "/faux-request"
+    contentType: "application/json"
+    success: (data, textStatus, xhr) ->
+      assert.ok(_.isEqual(xhr.status, 201), "Response status not a match received: #{textStatus}")
+    error: (xhr, textStatus) ->
+      assert.ok(false, "Faux data does match the real request data. The request should not have returned an error")
+    complete: (xhr, textStatus) ->
+      done()
+
 test "When faux and real request have the same data with different key orders the request is successfully faked", (assert) ->
   done = assert.async()
   $.fauxjax.new
