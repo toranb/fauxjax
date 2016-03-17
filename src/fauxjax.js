@@ -105,11 +105,19 @@
      *                                   that caused the request to not be matched
      * @returns {undefined}
      */
-    function debugInfo(url, mismatchedProperty) {
+    function debugInfo(mockVerb, realVerb, mockContentType, realContentType, mockData, realData, mockHeaders, realHeaders, mockUrl, realUrl) {
       if ($.fauxjax.settings.debug) {
         console.log('===== Fauxjax Debug Info =====');
-        console.log('URL: ' + url);
-        console.log('[' + mismatchedProperty + '] property does not match actual request');
+        console.log('*Real Request*');
+        console.log('    URL:     ' + realUrl);
+        console.log('    Type:    ' + realVerb);
+        console.log('    Headers: ' + _.toPairs(realHeaders));
+        console.log('    Data:    ' + _.toPairs(realData));
+        console.log('*Mock Request*');
+        console.log('    URL:     ' + mockUrl);
+        console.log('    Type:    ' + mockVerb);
+        console.log('    Headers: ' + _.toPairs(mockHeaders));
+        console.log('    Data:    ' + _.toPairs(mockData));
       }
     }
 
@@ -157,18 +165,18 @@
            if (mockVerb && mockVerb.toLowerCase() !== realVerb.toLowerCase()) { return false; }
            if (!_.isEqual(realContentType, mockContentType))                  {
                if ($.fauxjax.settings.strictMatching || mockData && !realData) {
-                 debugInfo(mockRequest.url, 'contentType');
+                 debugInfo(mockVerb, realVerb, mockContentType, realContentType, mockData, realData, mockRequest.headers, realRequestContext.headers, mockRequest.url, realRequestContext.url);
                  return false;
                }
            }
            if (_.some(_.compact([mockData, realData])) && !_.isEqual(mockData, realData)) {
                if ($.fauxjax.settings.strictMatching || mockData && !realData) {
-                 debugInfo(mockRequest.url, 'data');
+                 debugInfo(mockVerb, realVerb, mockContentType, realContentType, mockData, realData, mockRequest.headers, realRequestContext.headers, mockRequest.url, realRequestContext.url);
                  return false;
                }
            }
            if (!_.isEqual(mockRequest.headers, realRequestContext.headers) && $.fauxjax.settings.strictMatching) {
-               debugInfo(mockRequest.url, 'headers');
+               debugInfo(mockVerb, realVerb, mockContentType, realContentType, mockData, realData, mockRequest.headers, realRequestContext.headers, mockRequest.url, realRequestContext.url);
                return false;
            }
            return true;

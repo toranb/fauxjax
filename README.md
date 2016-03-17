@@ -26,7 +26,6 @@ bower install fauxjax
 - [Quick Start Basic Usage Example](https://github.com/JarrodCTaylor/fauxjax/wiki/Complete-basic-usage-example)
 - [Fauxjax Default Settings](https://github.com/JarrodCTaylor/fauxjax/wiki/Faux-Default-Settings)
 - [Clearing Fauxjax Handlers](https://github.com/JarrodCTaylor/fauxjax/wiki/Clearing-Fauxjax-Handlers)
-- [Checking for Unfaked Ajax Requests and Unused Fauxjax Instances](https://github.com/JarrodCTaylor/fauxjax/wiki/Checking-for-Unfaked-Ajax-Requests-and-Unused-Fauxjax-Instances)
 - [API Reference](https://github.com/JarrodCTaylor/fauxjax/wiki/API-Reference)
 
 # Running the Fauxjax Tests Locally
