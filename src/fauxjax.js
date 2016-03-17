@@ -109,15 +109,17 @@
       if ($.fauxjax.settings.debug) {
         console.log('===== Fauxjax Debug Info =====');
         console.log('*Real Request*');
-        console.log('    URL:     ' + realUrl);
-        console.log('    Type:    ' + realVerb);
-        console.log('    Headers: ' + _.toPairs(realHeaders));
-        console.log('    Data:    ' + _.toPairs(realData));
+        console.log('    URL:         ' + realUrl);
+        console.log('    Type:        ' + realVerb);
+        console.log('    contentType: ' + realContentType);
+        console.log('    Headers:     ' + _.toPairs(realHeaders));
+        console.log('    Data:        ' + _.toPairs(realData));
         console.log('*Mock Request*');
-        console.log('    URL:     ' + mockUrl);
-        console.log('    Type:    ' + mockVerb);
-        console.log('    Headers: ' + _.toPairs(mockHeaders));
-        console.log('    Data:    ' + _.toPairs(mockData));
+        console.log('    URL:         ' + mockUrl);
+        console.log('    Type:        ' + mockVerb);
+        console.log('    contentType: ' + mockContentType);
+        console.log('    Headers:     ' + _.toPairs(mockHeaders));
+        console.log('    Data:        ' + _.toPairs(mockData));
       }
     }
 
