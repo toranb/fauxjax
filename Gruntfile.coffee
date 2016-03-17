@@ -1,6 +1,5 @@
 module.exports = (grunt) ->
   grunt.loadNpmTasks("grunt-contrib-coffee")
-  grunt.loadNpmTasks('grunt-testem-frontage')
   grunt.loadNpmTasks('grunt-contrib-uglify')
   grunt.loadNpmTasks('grunt-karma')
   grunt.loadNpmTasks('grunt-karma-coveralls')
@@ -27,7 +26,7 @@ module.exports = (grunt) ->
     uglify:
       my_target:
         files:
-          "dist/fauxjax.min.js": ["node_modules/lodash/index.js", "src/fauxjax.js"]
+          "dist/fauxjax.min.js": ["src/lodash-4.6.1.js", "src/fauxjax.js"]
 
-    grunt.task.registerTask("test", ["coffee", "uglify", "testem"])
+    grunt.task.registerTask("test", ["coffee", "uglify", "karma"])
     grunt.task.registerTask("deploy", ["coffee", "uglify", "karma", "coveralls"])
