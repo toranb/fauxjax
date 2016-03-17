@@ -1,6 +1,6 @@
 {
   "name": "fauxjax",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Faux ajax requests for your javascript testing needs",
   "url": "https://github.com/JarrodCTaylor/fauxjax",
   "keywords": ["ajax", "mock", "fake", "unit"],
