@@ -139,6 +139,20 @@
     }
 
     /**
+     * Compare data for equality ignoring array order
+     * @param {Object} first An object representing the data of the first item
+     * @param {Object} second An object representing the data of the second item
+     * @returns {Boolean} Returns true if the data is equal
+     */
+    function dataEqual(first, second) {
+      if (first && second && first.values instanceof Array && second.values instanceof Array) {
+        return _.isEqual($(first).serializeArray(), $(second).serializeArray());
+      } else {
+        return _.isEqual(first, second);
+      }
+    }
+
+    /**
      * Compares a mockHandler and a real Ajax request and determines if the real request should be mocked.
      * @param {Object} mockHandler A fauxjax settings object
      * @param {Object} realRequestContext The real context of the actual Ajax request
@@ -161,7 +175,7 @@
                  return false;
                }
            }
-           if (_.some(_.compact([mockData, realData])) && !_.isEqual(mockData, realData)) {
+           if (_.some(_.compact([mockData, realData])) && !dataEqual(mockData, realData)) {
                if ($.fauxjax.settings.strictMatching || mockData && !realData) {
                  debugInfo(mockRequest.url, 'data');
                  return false;

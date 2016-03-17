@@ -71,6 +71,27 @@ test "When faux and real request have the same data with different key orders th
     complete: (xhr, textStatus) ->
       done()
 
+test "When faux and real request have the same array data in a different order the request is successfully faked", (assert) ->
+  done = assert.async()
+  $.fauxjax.new
+    request:
+      method: "POST"
+      url: "/faux-request"
+      data: {values: ["a", "b", "c"]}
+    response:
+      content: {fakeResponse: "Post success"}
+
+  $.ajax
+    method: "POST"
+    url: "/faux-request"
+    data: {values: ["b", "a", "c"]}
+    success: (data, textStatus, xhr) ->
+      assert.ok(_.isEqual(data, {"fakeResponse": "Post success"}), "Response text not a match received: #{data}")
+    error: (xhr, textStatus) ->
+      assert.ok(false, "Faux data does match the real request data. The request should not have returned an error")
+    complete: (xhr, textStatus) ->
+      done()
+
 test "When faux and real request have the same data one JSON.stringify'd and the other an object the request is successfully faked", (assert) ->
   done = assert.async()
   $.fauxjax.new
