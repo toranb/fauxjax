@@ -163,10 +163,11 @@
            var mockRequest     = mockHandler.request;
            var mockData        = parseData(mockHandler.request.data, mockContentType);
            var realData        = parseData(realRequestContext.data, realContentType);
-           if (!_.isEqual(mockRequest.url, realRequestContext.url))           { return false; }
-           if (mockVerb && mockVerb.toLowerCase() !== realVerb.toLowerCase()) { return false; }
-           if (!_.isEqual(realContentType, mockContentType))                  {
-               if ($.fauxjax.settings.strictMatching || mockData && !realData) {
+           var urlRegexMatch   = _.isRegExp(mockRequest.url) && mockRequest.url.test(realRequestContext.url);
+           if (!_.isEqual(mockRequest.url, realRequestContext.url) && !urlRegexMatch) { return false; }
+           if (mockVerb && mockVerb.toLowerCase() !== realVerb.toLowerCase())         { return false; }
+           if (!_.isEqual(realContentType, mockContentType))                          {
+               if ($.fauxjax.settings.strictMatching || mockData && !realData)        {
                  debugInfo(mockVerb, realVerb, mockContentType, realContentType, mockData, realData, mockRequest.headers, realRequestContext.headers, mockRequest.url, realRequestContext.url);
                  return false;
                }

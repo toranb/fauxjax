@@ -49,3 +49,22 @@ test "When faux and real requests have the same urls fauxjax does fake request",
       assert.ok(false, "Faux request url does match real request url. Request should not have returned an error")
     complete: (xhr, textStatus) ->
       done()
+
+test "When faux has regex that matches real requests url fauxjax does fake request", (assert) ->
+  done = assert.async()
+  expect(0)
+
+  $.fauxjax.new
+    request:
+      method: "GET"
+      url: /\w{4}-\w{7}/
+    response:
+      content: {foo: "bar"}
+
+  $.ajax
+    method: "GET"
+    url: "/faux-request"
+    error: (xhr, textStatus) ->
+      assert.ok(false, "Faux request url does match real request url. Request should not have returned an error")
+    complete: (xhr, textStatus) ->
+      done()
