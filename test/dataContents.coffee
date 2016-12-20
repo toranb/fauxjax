@@ -50,6 +50,35 @@ test "When faux and real request have the same data the request is successfully 
     complete: (xhr, textStatus) ->
       done()
 
+test "When faux and real request have the same data the request is successfully faked even if mutiple handlers exist for the same url", (assert) ->
+  done = assert.async()
+  $.fauxjax.new
+    request:
+      method: "POST"
+      url: "/faux-request"
+      data: {values: [1, 2, 3]}
+    response:
+      content: {fakeResponse: "Erroneous match, post data does not match"}
+
+  $.fauxjax.new
+    request:
+      method: "POST"
+      url: "/faux-request"
+      data: {values: [4, 5, 6]}
+    response:
+      content: {fakeResponse: "Post success"}
+
+  $.ajax
+    method: "POST"
+    url: "/faux-request"
+    data: {values: [4, 5, 6]}
+    success: (data, textStatus, xhr) ->
+      assert.ok(_.isEqual(data, {"fakeResponse": "Post success"}), "Response text not a match received: #{data}")
+    error: (xhr, textStatus) ->
+      assert.ok(false, "Faux data does match the real request data. The request should not have returned an error")
+    complete: (xhr, textStatus) ->
+      done()
+
 test "When faux and real request have the same data with different key orders the request is successfully faked", (assert) ->
   done = assert.async()
   $.fauxjax.new
