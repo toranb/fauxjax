@@ -146,6 +146,29 @@ test "When faux and real request have the same data both JSON.stringify'd object
     complete: (xhr, textStatus) ->
       done()
 
+test "When faux and real request have the same data both JSON.stringify'd objects the request is successfully faked for application/vnd.api+json", (assert) ->
+  done = assert.async()
+  $.fauxjax.new
+    request:
+      method: "POST"
+      url: "/faux-request"
+      contentType: "application/vnd.api+json"
+      data: JSON.stringify({foo: "bar", wat: "baz"})
+    response:
+      content: {fakeResponse: "Post success"}
+
+  $.ajax
+    method: "POST"
+    url: "/faux-request"
+    data: JSON.stringify({wat: "baz", foo: "bar"})
+    contentType: "application/vnd.api+json"
+    success: (data, textStatus, xhr) ->
+      assert.ok(_.isEqual(data, {"fakeResponse": "Post success"}), "Response text not a match received: #{data}")
+    error: (xhr, textStatus) ->
+      assert.ok(false, "Faux data does match the real request data. The request should not have returned an error")
+    complete: (xhr, textStatus) ->
+      done()
+
 test "Correctly matches request data when empty objects", (assert) ->
   done = assert.async()
   expect(0)
