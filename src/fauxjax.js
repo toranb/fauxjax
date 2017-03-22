@@ -130,7 +130,7 @@
      * @returns {String} Returns the contentType
      */
     function parseContentType(handler) {
-      if (_.startsWith(handler.contentType, 'application/json')) { return 'application/json'; }
+      if (_.includes(handler.contentType, 'json')) { return 'application/json'; }
       return 'application/x-www-form-urlencoded';
     }
 
@@ -144,7 +144,7 @@
      * @returns {String|Object}    The parsed data to be compared for a match
      */
     function parseData(data, contentType) {
-      if (_.isEqual(contentType, 'application/json') && !_.isObject(data)) { return JSON.parse(data); }
+      if (_.includes(['application/vnd.api+json', 'application/json'], contentType) && !_.isObject(data)) { return JSON.parse(data); }
       return data;
     }
 
