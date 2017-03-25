@@ -57,6 +57,20 @@
     };
 
     /**
+     * Remove faux handler from handlers array matching url and method
+     * @param {String} url The url of the faux handler to be removed
+     * @param {String} method The method of the faux handler to be removed
+     * @returns {undefined}
+     */
+    $.fauxjax.removeExisting = function(url, method) {
+      fauxHandlers.forEach(function(xhr, index) {
+          if(xhr && xhr.request && xhr.request.url === url && xhr.request.method === method) {
+              fauxHandlers[index] = null;
+          }
+      });
+    };
+
+    /**
      * Gets an array containing all faux requests that have not been fired.
      * Useful is test teardown to check for unneeded mocking.
      * @param {None}
