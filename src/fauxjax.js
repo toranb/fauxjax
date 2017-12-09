@@ -156,6 +156,7 @@
      */
     function shouldMockRequest(mockHandler, realRequestContext) {
         if (mockHandler) {
+           var strictMatching  = mockHandler.request.strictMatching || $.fauxjax.settings.strictMatching;
            var mockVerb        = mockHandler.request.method || mockHandler.request.type;
            var realVerb        = realRequestContext.method || realRequestContext.type;
            var realContentType = parseContentType(realRequestContext);
@@ -167,18 +168,18 @@
            if (!_.isEqual(mockRequest.url, realRequestContext.url) && !urlRegexMatch) { return false; }
            if (mockVerb && mockVerb.toLowerCase() !== realVerb.toLowerCase())         { return false; }
            if (!_.isEqual(realContentType, mockContentType))                          {
-               if ($.fauxjax.settings.strictMatching || mockData && !realData)        {
+               if (strictMatching || mockData && !realData)        {
                  debugInfo(mockVerb, realVerb, mockContentType, realContentType, mockData, realData, mockRequest.headers, realRequestContext.headers, mockRequest.url, realRequestContext.url);
                  return false;
                }
            }
            if (_.some(_.compact([mockData, realData])) && !_.isEqual(mockData, realData)) {
-               if ($.fauxjax.settings.strictMatching || mockData && !realData) {
+               if (strictMatching || mockData && !realData) {
                  debugInfo(mockVerb, realVerb, mockContentType, realContentType, mockData, realData, mockRequest.headers, realRequestContext.headers, mockRequest.url, realRequestContext.url);
                  return false;
                }
            }
-           if (!_.isEqual(mockRequest.headers, realRequestContext.headers) && $.fauxjax.settings.strictMatching) {
+           if (!_.isEqual(mockRequest.headers, realRequestContext.headers) && strictMatching) {
                debugInfo(mockVerb, realVerb, mockContentType, realContentType, mockData, realData, mockRequest.headers, realRequestContext.headers, mockRequest.url, realRequestContext.url);
                return false;
            }

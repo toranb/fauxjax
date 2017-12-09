@@ -91,3 +91,43 @@ test "When faux request has no request headers and real request does fauxjax doe
     complete: (xhr, textStatus) ->
       done()
 
+test "When two ajax calls have same url and different data they can individually turn on strict matching", (assert) ->
+  done = assert.async()
+  expect(2)
+
+  $.fauxjax.new
+    request:
+      strictMatching: true
+      method: "POST"
+      url: "/faux-request"
+      data: {foo: "bar"}
+    response:
+      content: {foo: "bar"}
+  $.fauxjax.new
+    request:
+      strictMatching: true
+      method: "POST"
+      url: "/faux-request"
+      data: {foo: "baz"}
+    response:
+      content: {foo: "baz"}
+
+  $.ajax
+    method: "POST"
+    url: "/faux-request"
+    data: {foo: "baz"}
+    error: (xhr, textStatus) ->
+      assert.ok(false, "Strict mode set to false. Request should succeed")
+      done()
+    success: (xhr, textStatus) ->
+      assert.deepEqual(xhr, {foo: "baz"})
+      $.ajax
+        method: "POST"
+        url: "/faux-request"
+        data: {foo: "bar"}
+        error: (xhr, textStatus) ->
+          assert.ok(false, "Strict mode set to false. Request should succeed")
+        success: (xhr, textStatus) ->
+          assert.deepEqual(xhr, {foo: "bar"})
+        complete: ->
+          done()
